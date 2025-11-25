@@ -1,0 +1,483 @@
+# Backend - Django REST Framework Rules
+
+## 📋 REGLAS ESTRICTAS DE CÓDIGO
+
+### Idioma y Nomenclatura
+
+1. **Nombres de funciones/métodos**: INGLÉS (snake_case)
+2. **Nombres de clases**: INGLÉS (PascalCase)
+3. **Nombres de variables**: INGLÉS (snake_case)
+4. **Comentarios**: ESPAÑOL (solo cuando sea necesario)
+5. **Docstrings**: INGLÉS (OBLIGATORIO)
+
+### Documentación de Funciones (OBLIGATORIO)
+
+#### Formato de Docstrings - Google Style
+
+```python
+def calculate_order_total(order_id: int, apply_discount: bool = False) -> Decimal:
+    """
+    Calculate the total amount for an order including taxes and discounts.
+    
+    This function retrieves all order items, calculates subtotals,
+    applies taxes, and optionally applies available discounts.
+    
+    Args:
+        order_id: The unique identifier of the order
+        apply_discount: Whether to apply available discounts
+        
+    Returns:
+        The total order amount including taxes and discounts
+        
+    Raises:
+        OrderNotFoundError: If the order does not exist
+        InvalidOrderStateError: If the order is in an invalid state
+        
+    Example:
+        >>> calculate_order_total(123, apply_discount=True)
+        Decimal('159.99')
+    """
+    pass
+```
+
+#### Docstrings para Clases
+
+```python
+class OrderSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Order model with nested items and customer data.
+    
+    This serializer handles order creation, validation of items,
+    and automatic calculation of totals. It includes nested
+    serialization of order items and read-only customer information.
+    
+    Attributes:
+        items: Nested OrderItemSerializer for order items
+        customer: Read-only CustomerSerializer for customer data
+        
+    Meta:
+        model: Order model
+        fields: All order fields including nested relationships
+    """
+    pass
+```
+
+#### Docstrings para Métodos de Clases
+
+```python
+class Product(models.Model):
+    """Product model representing items in the catalog."""
+    
+    def apply_discount(self, percentage: float) -> Decimal:
+        """
+        Apply a percentage discount to the product price.
+        
+        Args:
+            percentage: Discount percentage (0-100)
+            
+        Returns:
+            The discounted price
+            
+        Raises:
+            ValueError: If percentage is not between 0 and 100
+        """
+        if not 0 <= percentage <= 100:
+            raise ValueError("Percentage must be between 0 and 100")
+        return self.price * (1 - Decimal(percentage) / 100)
+```
+
+### Type Hints (OBLIGATORIO)
+
+```python
+# ✅ CORRECTO
+from typing import List, Optional, Dict, Any
+from decimal import Decimal
+
+def get_products_by_category(
+    category_id: int,
+    limit: Optional[int] = None
+) -> List[Dict[str, Any]]:
+    """Retrieve products filtered by category."""
+    pass
+
+def update_user_profile(
+    user_id: int,
+    data: Dict[str, Any]
+) -> Optional[User]:
+    """Update user profile with provided data."""
+    pass
+
+# ❌ INCORRECTO - Sin type hints
+def get_products_by_category(category_id, limit=None):
+    pass
+```
+
+### Comentarios en Código
+
+#### ✅ Buenos Comentarios
+
+```python
+# Validar que el usuario tenga permisos antes de proceder
+if not user.has_permission('delete_order'):
+    raise PermissionDeniedError()
+
+# Calcular el precio con impuestos según la región
+tax_rate = get_tax_rate(user.region)
+final_price = base_price * (1 + tax_rate)
+
+# Serializar datos y retornar respuesta
+serializer = ProductSerializer(products, many=True)
+return Response(serializer.data)
+```
+
+#### ❌ Malos Comentarios
+
+```python
+# ❌ NO - Comentario obvio
+# Incrementar contador
+counter += 1
+
+# ❌ NO - Historial de cambios (usar Git)
+# Antes se usaba get(), ahora usamos filter()
+# Modificado el 2024-01-15 por Juan
+products = Product.objects.filter(active=True)
+
+# ❌ NO - Emojis
+# 🚀 Función super rápida para obtener usuarios
+
+# ❌ NO - Código comentado (eliminar o usar Git)
+# old_method()
+# previous_calculation = x * 2
+new_calculation = calculate_value(x)
+
+# ❌ NO - Comentarios vagos
+# Hacer algo aquí
+# Fix para bug
+# Temporal
+```
+
+### Estructura de Archivos
+
+#### models.py
+
+```python
+"""
+Models for the products application.
+
+This module contains all database models related to products,
+categories, and inventory management.
+"""
+from django.db import models
+from django.contrib.auth.models import User
+from typing import Optional
+from decimal import Decimal
+
+
+class Category(models.Model):
+    """Product category for organizing the catalog."""
+    
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField(blank=True)
+    
+    class Meta:
+        verbose_name_plural = "categories"
+        ordering = ['name']
+    
+    def __str__(self) -> str:
+        return self.name
+    
+    def get_product_count(self) -> int:
+        """
+        Get the number of active products in this category.
+        
+        Returns:
+            Number of active products
+        """
+        return self.products.filter(is_active=True).count()
+```
+
+#### views.py
+
+```python
+"""
+API views for product management.
+
+This module provides REST API endpoints for CRUD operations
+on products, including filtering, searching, and pagination.
+"""
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from typing import Any
+
+
+class ProductViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for managing products.
+    
+    Provides standard CRUD operations plus custom actions
+    for searching and filtering products by various criteria.
+    """
+    
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    
+    @action(detail=False, methods=['get'])
+    def search(self, request: Any) -> Response:
+        """
+        Search products by name or description.
+        
+        Query parameters:
+            q: Search query string
+            
+        Returns:
+            List of matching products
+        """
+        query = request.query_params.get('q', '')
+        products = self.get_queryset().filter(
+            models.Q(name__icontains=query) |
+            models.Q(description__icontains=query)
+        )
+        serializer = self.get_serializer(products, many=True)
+        return Response(serializer.data)
+```
+
+#### serializers.py
+
+```python
+"""
+Serializers for product-related models.
+
+This module contains all DRF serializers for products,
+categories, and related data transformations.
+"""
+from rest_framework import serializers
+from typing import Dict, Any
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Product model with nested category data.
+    
+    Includes validation for price ranges and automatic
+    slug generation from product name.
+    """
+    
+    category_name = serializers.CharField(
+        source='category.name',
+        read_only=True
+    )
+    
+    class Meta:
+        model = Product
+        fields = [
+            'id', 'name', 'slug', 'description',
+            'price', 'category', 'category_name',
+            'is_active', 'created_at'
+        ]
+        read_only_fields = ['id', 'slug', 'created_at']
+    
+    def validate_price(self, value: Decimal) -> Decimal:
+        """
+        Validate that price is positive and within acceptable range.
+        
+        Args:
+            value: Price to validate
+            
+        Returns:
+            Validated price
+            
+        Raises:
+            ValidationError: If price is invalid
+        """
+        if value <= 0:
+            raise serializers.ValidationError(
+                "Price must be greater than zero"
+            )
+        if value > 999999:
+            raise serializers.ValidationError(
+                "Price exceeds maximum allowed value"
+            )
+        return value
+```
+
+### Tests (OBLIGATORIO)
+
+```python
+"""
+Tests for product API endpoints.
+
+This module contains unit and integration tests for all
+product-related API operations.
+"""
+from django.test import TestCase
+from rest_framework.test import APIClient
+from decimal import Decimal
+
+
+class ProductAPITestCase(TestCase):
+    """Test cases for Product API endpoints."""
+    
+    def setUp(self) -> None:
+        """Set up test data and client."""
+        self.client = APIClient()
+        self.category = Category.objects.create(
+            name="Electronics",
+            slug="electronics"
+        )
+    
+    def test_create_product_success(self) -> None:
+        """
+        Test successful product creation with valid data.
+        
+        Verifies that:
+        - Product is created with correct data
+        - Response status is 201 Created
+        - Slug is auto-generated correctly
+        """
+        data = {
+            'name': 'Laptop',
+            'price': '999.99',
+            'category': self.category.id
+        }
+        response = self.client.post('/api/products/', data)
+        
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.data['name'], 'Laptop')
+        self.assertEqual(response.data['slug'], 'laptop')
+```
+
+### Constantes y Configuración
+
+```python
+"""Configuration constants for the products module."""
+
+# Maximum values
+MAX_PRODUCT_NAME_LENGTH: int = 200
+MAX_PRICE_VALUE: Decimal = Decimal('999999.99')
+MIN_PRICE_VALUE: Decimal = Decimal('0.01')
+
+# Default pagination
+DEFAULT_PAGE_SIZE: int = 20
+MAX_PAGE_SIZE: int = 100
+
+# Cache timeouts (seconds)
+PRODUCT_CACHE_TIMEOUT: int = 3600
+CATEGORY_CACHE_TIMEOUT: int = 86400
+```
+
+### Imports (Orden OBLIGATORIO)
+
+```python
+# 1. Standard library
+import json
+import logging
+from datetime import datetime
+from typing import List, Dict, Optional, Any
+
+# 2. Third-party
+from django.db import models
+from django.contrib.auth.models import User
+from rest_framework import serializers, viewsets
+
+# 3. Local/Project
+from apps.core.models import BaseModel
+from apps.users.services import UserService
+```
+
+### Manejo de Errores
+
+```python
+def get_order_by_id(order_id: int) -> Order:
+    """
+    Retrieve an order by its ID.
+    
+    Args:
+        order_id: The order ID to retrieve
+        
+    Returns:
+        The Order instance
+        
+    Raises:
+        OrderNotFoundError: If order does not exist
+        DatabaseError: If database operation fails
+    """
+    try:
+        return Order.objects.get(id=order_id)
+    except Order.DoesNotExist:
+        logger.error(f"Order not found: {order_id}")
+        raise OrderNotFoundError(f"Order {order_id} does not exist")
+    except Exception as e:
+        logger.exception(f"Database error retrieving order {order_id}")
+        raise DatabaseError("Failed to retrieve order") from e
+```
+
+## ❌ PROHIBICIONES ESTRICTAS
+
+### NO permitido
+
+```python
+# ❌ NO - Funciones sin docstring
+def calculate_total(items):
+    return sum(item.price for item in items)
+
+# ❌ NO - Sin type hints
+def get_user(user_id):
+    return User.objects.get(id=user_id)
+
+# ❌ NO - Comentarios con emojis
+# 🚀 Super función rápida
+
+# ❌ NO - Código comentado
+# old_code = "something"
+# legacy_function()
+
+# ❌ NO - Comentarios de historial
+# Modificado por Juan el 2024-01-15
+# Antes usaba filter, ahora usa get
+
+# ❌ NO - Variables sin tipo en parámetros
+def process_data(data, options):
+    pass
+
+# ❌ NO - Excepciones genéricas sin logging
+try:
+    something()
+except:
+    pass
+
+# ❌ NO - Nombres en español para funciones
+def obtener_usuario(id):
+    pass
+
+# ❌ NO - Print statements (usar logging)
+print("Debug info")
+```
+
+## ✅ CHECKLIST DE CÓDIGO
+
+Antes de hacer commit, verificar:
+
+- [ ] Todas las funciones tienen docstrings en inglés
+- [ ] Todos los parámetros tienen type hints
+- [ ] Nombres de funciones/clases en inglés
+- [ ] Sin emojis en comentarios
+- [ ] Sin código comentado
+- [ ] Sin historial en comentarios
+- [ ] Imports ordenados correctamente
+- [ ] Tests escritos para nueva funcionalidad
+- [ ] Logging apropiado para errores
+- [ ] Sin print() statements
+- [ ] Black ejecutado (formateo)
+- [ ] Flake8 sin errores
+- [ ] isort ejecutado (ordenar imports)
+- [ ] mypy sin errores (type checking)
+
+## 📚 Referencias
+
+- [PEP 8](https://pep8.org/)
+- [PEP 484 - Type Hints](https://www.python.org/dev/peps/pep-0484/)
+- [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+- [Django Best Practices](https://docs.djangoproject.com/en/stable/misc/design-philosophies/)
+

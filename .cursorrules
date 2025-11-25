@@ -1,0 +1,1363 @@
+# Reglas de Cursor para el Proyecto Comercio
+
+## 🎯 Objetivo
+
+Este proyecto sigue estándares profesionales de desarrollo con Git Flow, Conventional Commits y documentación estricta.
+
+## 📋 REGLAS GENERALES
+
+### Idioma
+
+- SIEMPRE responder en ESPAÑOL
+- Código y commits en INGLÉS
+- Documentación en ESPAÑOL
+- Comentarios del código en INGLÉS
+
+### Stack Tecnológico
+
+- **Backend**: Django 5.0 + Django REST Framework
+- **Frontend**: Next.js 14 + TypeScript + Tailwind CSS + shadcn/ui
+- **Base de datos**: PostgreSQL (prod), SQLite (dev)
+- **Containerización**: Docker + Docker Compose
+
+---
+
+## 🏃 TRABAJO CON SPRINTS (OBLIGATORIO)
+
+### Regla Fundamental
+
+**TODO el trabajo DEBE estar organizado en sprints.**
+**NINGÚN cambio, feature o fix puede hacerse sin estar documentado en un sprint.**
+
+### Estructura de Sprint
+
+Cada sprint DEBE tener su carpeta en `docs/sprints/sprint-N/` con estos archivos:
+
+```
+docs/sprints/sprint-N/
+├── planning.md          # Planificación del sprint
+├── user-stories.md      # User stories con tareas detalladas
+├── progress.md          # Seguimiento diario (checkboxes de tareas)
+└── retrospective.md     # Retrospectiva (al finalizar)
+```
+
+### Proceso Obligatorio
+
+1. **ANTES de empezar cualquier trabajo:**
+
+   - ✅ La tarea DEBE existir en `docs/sprints/sprint-N/user-stories.md`
+   - ✅ La tarea DEBE tener un ID único (T-001, T-002, etc.)
+   - ✅ La tarea DEBE tener una rama definida (feature/sprint1-001-...)
+   - ✅ La tarea DEBE estar en `progress.md` con checkbox `[ ]`
+
+2. **DURANTE el trabajo:**
+
+   - ✅ Crear rama según lo especificado en la tarea
+   - ✅ Hacer commits siguiendo Conventional Commits
+   - ✅ Marcar tarea como "En Progreso" en `progress.md` con 🟡
+   - ✅ Actualizar `progress.md` DIARIAMENTE
+
+3. **AL COMPLETAR una tarea:**
+   - ✅ Marcar checkbox como `[x]` en `user-stories.md`
+   - ✅ Marcar checkbox como `[x]` en `progress.md`
+   - ✅ Mover de "En Progreso" a "Completadas" en `progress.md`
+   - ✅ Actualizar CHANGELOG.md con el cambio
+   - ✅ Actualizar `docs/` según corresponda
+   - ✅ Crear Pull Request con referencia a tarea (T-XXX)
+
+### Formato de Tareas en user-stories.md
+
+```markdown
+- [ ] **T-001:** Crear modelo Product
+  - Descripción de la tarea
+  - Criterios de éxito
+  - Tests requeridos
+  - **Rama:** `feature/sprint1-001-product-model`
+  - **Estimado:** 3 horas
+```
+
+### Formato de Tracking en progress.md
+
+```markdown
+## ✅ Tareas Completadas
+
+- [x] T-001: Product model - Completado 28/01/2025
+- [x] T-002: Products list API - Completado 28/01/2025
+
+## 🟡 Tareas En Progreso
+
+- [ ] T-003: Product search API (Iniciado 29/01)
+
+## ⏳ Tareas Pendientes
+
+### US-001: Registro rápido de venta
+
+- [ ] T-004: Sale models
+- [ ] T-005: Create sale API
+```
+
+### Si No Hay Sprint Activo
+
+**NUNCA trabajar sin sprint activo.**
+
+Si necesitas hacer un cambio y NO hay sprint:
+
+1. Planificar sprint nuevo en `docs/sprints/sprint-N/`
+2. Documentar tareas necesarias
+3. Recién entonces empezar a trabajar
+
+### Si la Tarea No Está en el Sprint
+
+**NUNCA hacer trabajo no planificado.**
+
+Si surge una tarea nueva:
+
+- **Opción A (urgente):** Agregarla al sprint actual si hay capacidad
+- **Opción B (no urgente):** Agregarla al backlog del próximo sprint
+- **Opción C (hotfix crítico):** Usar proceso de hotfix
+
+### Instrucciones para Cursor AI
+
+**ANTES de hacer cualquier cambio de código:**
+
+1. Verificar que existe sprint activo
+2. Verificar que la tarea está en `user-stories.md`
+3. Si no existe → preguntar y crear primero
+4. Crear rama según especificación
+5. Hacer el trabajo
+6. Marcar checkboxes al completar
+7. Actualizar `progress.md` SIEMPRE
+8. Actualizar CHANGELOG.md SIEMPRE
+9. Actualizar `docs/` según corresponda SIEMPRE
+
+**NUNCA:**
+
+- ❌ Empezar trabajo sin tarea documentada
+- ❌ Olvidar marcar checkboxes
+- ❌ Olvidar actualizar progress.md
+- ❌ Crear rama sin seguir nomenclatura del sprint
+
+---
+
+## 🌿 GIT FLOW - ESTRATEGIA DE RAMAS (ESTRICTO)
+
+### Ramas Principales (NUNCA ELIMINAR)
+
+1. **`main`** (Producción)
+
+   - Solo código en producción
+   - SOLO acepta merges de `release/*` o `hotfix/*`
+   - SIEMPRE debe estar funcional
+   - Tag con versión semántica (v1.0.0)
+   - Protegida: requiere pull request y revisión
+
+2. **`dev`** (Desarrollo)
+   - Rama de integración
+   - Acepta merges de `feature/*`, `bugfix/*`
+   - Base para nuevas features
+   - Debe pasar todos los tests antes de merge
+
+### Ramas Temporales (SE ELIMINAN después del merge)
+
+3. **`feature/*`** - Nuevas funcionalidades
+
+   ```bash
+   # Nomenclatura: feature/SPRINT-NUMERO-descripcion-corta
+   feature/sprint1-001-user-authentication
+   feature/sprint1-002-product-catalog
+   feature/sprint2-003-shopping-cart
+   ```
+
+   - Se crean desde: `dev`
+   - Se fusionan en: `dev`
+   - Duración máxima: 1 sprint (2 semanas)
+
+4. **`bugfix/*`** - Corrección de bugs en desarrollo
+
+   ```bash
+   # Nomenclatura: bugfix/descripcion-del-bug
+   bugfix/fix-login-validation
+   bugfix/fix-api-timeout
+   ```
+
+   - Se crean desde: `dev`
+   - Se fusionan en: `dev`
+
+5. **`hotfix/*`** - Correcciones urgentes en producción
+
+   ```bash
+   # Nomenclatura: hotfix/v1.0.1-descripcion
+   hotfix/v1.0.1-critical-security-fix
+   ```
+
+   - Se crean desde: `main`
+   - Se fusionan en: `main` Y `dev`
+   - Incrementa versión PATCH (1.0.0 → 1.0.1)
+
+6. **`release/*`** - Preparación para release
+   ```bash
+   # Nomenclatura: release/v1.1.0
+   release/v1.1.0
+   ```
+   - Se crean desde: `dev`
+   - Se fusionan en: `main` Y `dev`
+   - Solo correcciones menores, no features nuevas
+   - Incrementa versión MINOR (1.0.0 → 1.1.0)
+
+### Flujo de Trabajo Típico
+
+```bash
+# 1. Crear feature desde dev
+git checkout dev
+git pull origin dev
+git checkout -b feature/sprint1-001-user-auth
+
+# 2. Trabajar y commits (ver sección de commits)
+git add .
+git commit -m "feat(auth): add user login endpoint"
+
+# 3. Push y crear Pull Request
+git push origin feature/sprint1-001-user-auth
+# Crear PR en GitHub hacia 'dev'
+
+# 4. Después del merge, eliminar rama
+git checkout dev
+git pull origin dev
+git branch -d feature/sprint1-001-user-auth
+```
+
+---
+
+## 📝 CONVENTIONAL COMMITS (OBLIGATORIO)
+
+### Formato ESTRICTO
+
+```
+<tipo>(<scope>): <descripción corta>
+
+[cuerpo opcional]
+
+[footer opcional]
+```
+
+### Tipos Permitidos
+
+- **feat**: Nueva funcionalidad
+
+  ```
+  feat(auth): add JWT authentication
+  feat(products): implement product filtering
+  ```
+
+- **fix**: Corrección de bug
+
+  ```
+  fix(cart): resolve item duplication bug
+  fix(api): handle null pointer exception
+  ```
+
+- **docs**: Solo documentación
+
+  ```
+  docs(readme): update installation instructions
+  docs(api): add endpoint documentation
+  ```
+
+- **style**: Formato, punto y coma, etc. (no afecta código)
+
+  ```
+  style(frontend): format with prettier
+  style(backend): apply black formatter
+  ```
+
+- **refactor**: Refactorización (no fix ni feat)
+
+  ```
+  refactor(auth): simplify token validation
+  refactor(models): optimize database queries
+  ```
+
+- **perf**: Mejora de rendimiento
+
+  ```
+  perf(api): add caching layer
+  perf(frontend): optimize image loading
+  ```
+
+- **test**: Agregar o modificar tests
+
+  ```
+  test(auth): add unit tests for login
+  test(products): add integration tests
+  ```
+
+- **build**: Cambios en build o dependencias
+
+  ```
+  build(deps): update django to 5.0
+  build(docker): optimize dockerfile layers
+  ```
+
+- **ci**: Cambios en CI/CD
+
+  ```
+  ci(github): add automated tests workflow
+  ci(deploy): configure production deployment
+  ```
+
+- **chore**: Tareas de mantenimiento
+
+  ```
+  chore(deps): update npm dependencies
+  chore(config): update eslint rules
+  ```
+
+- **revert**: Revertir commit anterior
+
+  ```
+  revert: feat(auth): add JWT authentication
+
+  This reverts commit 1234567.
+  ```
+
+### Scopes Recomendados
+
+**Backend:**
+
+- `auth`, `api`, `models`, `views`, `serializers`, `middleware`, `admin`, `tests`, `config`, `database`, `cache`
+
+**Frontend:**
+
+- `ui`, `components`, `pages`, `api`, `hooks`, `utils`, `styles`, `types`, `config`, `state`, `routing`
+
+**General:**
+
+- `deps`, `docker`, `docs`, `tests`, `config`, `security`, `performance`
+
+### Ejemplos de Commits Buenos ✅
+
+```bash
+feat(auth): implement user registration with email verification
+
+- Add UserRegistration serializer
+- Create email verification endpoint
+- Add tests for registration flow
+
+Closes #123
+
+---
+
+fix(cart): resolve decimal precision error in total calculation
+
+The cart total was rounding incorrectly for certain product
+combinations. Updated to use Decimal type consistently.
+
+Fixes #456
+
+---
+
+docs(api): add OpenAPI documentation for product endpoints
+
+---
+
+perf(database): add indexes to frequently queried fields
+
+Improves query performance by ~40% for product searches.
+
+---
+
+refactor(components): extract Button component variants
+
+Breaking Change: Button API has changed. See migration guide.
+
+BREAKING CHANGE: Button `color` prop renamed to `variant`
+```
+
+### Ejemplos de Commits Malos ❌
+
+```bash
+❌ fix stuff
+❌ WIP
+❌ updated code
+❌ changes
+❌ Fixed bug
+❌ Added new feature
+```
+
+---
+
+## 🗂️ DOCUMENTACIÓN (ESTRUCTURA OBLIGATORIA)
+
+### Estructura de Carpetas
+
+```
+docs/
+├── README.md                          # Índice de documentación
+├── CHANGELOG.md                       # Historial de cambios
+├── CONTRIBUTING.md                    # Guía de contribución
+├── CODE_OF_CONDUCT.md                # Código de conducta
+│
+├── architecture/                      # Arquitectura del sistema
+│   ├── overview.md                   # Visión general
+│   ├── backend-architecture.md       # Arquitectura del backend
+│   ├── frontend-architecture.md      # Arquitectura del frontend
+│   ├── database-schema.md            # Esquema de base de datos
+│   └── api-design.md                 # Diseño de la API
+│
+├── api/                              # Documentación de API
+│   ├── README.md                     # Índice de endpoints
+│   ├── authentication.md             # Endpoints de autenticación
+│   ├── products.md                   # Endpoints de productos
+│   ├── orders.md                     # Endpoints de órdenes
+│   └── users.md                      # Endpoints de usuarios
+│
+├── guides/                           # Guías de usuario/desarrollador
+│   ├── getting-started.md           # Inicio rápido
+│   ├── development-setup.md         # Configuración de desarrollo
+│   ├── deployment.md                # Guía de despliegue
+│   ├── testing.md                   # Guía de testing
+│   └── troubleshooting.md           # Solución de problemas
+│
+├── sprints/                          # Documentación de sprints
+│   ├── sprint-1/                    # Sprint 1
+│   │   ├── planning.md              # Planificación
+│   │   ├── user-stories.md          # Historias de usuario
+│   │   └── retrospective.md         # Retrospectiva
+│   ├── sprint-2/
+│   └── ...
+│
+└── decisions/                        # ADRs (Architecture Decision Records)
+    ├── 0001-use-django-rest-framework.md
+    ├── 0002-use-nextjs-app-router.md
+    └── 0003-use-postgresql.md
+```
+
+### Formato de CHANGELOG.md (OBLIGATORIO)
+
+Seguir formato [Keep a Changelog](https://keepachangelog.com/es/1.0.0/):
+
+```markdown
+# Changelog
+
+Todos los cambios notables de este proyecto serán documentados en este archivo.
+
+El formato está basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
+y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
+
+## [Unreleased]
+
+### Added
+
+- Nueva funcionalidad que aún no se ha lanzado
+
+### Changed
+
+- Cambios en funcionalidad existente
+
+### Deprecated
+
+- Funcionalidades que se eliminarán pronto
+
+### Removed
+
+- Funcionalidades eliminadas
+
+### Fixed
+
+- Correcciones de bugs
+
+### Security
+
+- Correcciones de seguridad
+
+## [1.1.0] - 2024-01-20
+
+### Added
+
+- feat(auth): sistema de autenticación JWT
+- feat(products): catálogo de productos con filtros
+- feat(cart): carrito de compras persistente
+
+### Changed
+
+- refactor(api): mejorada estructura de respuestas
+- perf(database): optimizadas consultas de productos
+
+### Fixed
+
+- fix(auth): corregido bug en renovación de tokens
+- fix(cart): corregido cálculo de totales con decimales
+
+## [1.0.0] - 2024-01-01
+
+### Added
+
+- Configuración inicial del proyecto
+- Backend Django con REST Framework
+- Frontend Next.js con TypeScript
+- Docker y Docker Compose
+- Documentación básica
+
+[Unreleased]: https://github.com/gastonfr24/comercio/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/gastonfr24/comercio/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/gastonfr24/comercio/releases/tag/v1.0.0
+```
+
+### Formato de Documentación de Sprints
+
+```markdown
+# Sprint [NÚMERO] - [NOMBRE]
+
+**Fecha Inicio:** DD/MM/YYYY
+**Fecha Fin:** DD/MM/YYYY
+**Duración:** 2 semanas
+
+## 🎯 Objetivos
+
+- Objetivo 1
+- Objetivo 2
+- Objetivo 3
+
+## 📋 User Stories
+
+### US-001: [Título de la Historia]
+
+**Como** [rol]
+**Quiero** [funcionalidad]
+**Para** [beneficio]
+
+**Criterios de Aceptación:**
+
+- [ ] Criterio 1
+- [ ] Criterio 2
+- [ ] Criterio 3
+
+**Story Points:** 5
+**Prioridad:** Alta
+**Responsable:** @usuario
+
+---
+
+## 📊 Métricas
+
+- **Velocity:** 25 story points
+- **Completado:** 23 story points (92%)
+- **Carry Over:** 2 story points
+
+## 🎉 Logros
+
+- Logro 1
+- Logro 2
+
+## 🚧 Impedimentos
+
+- Impedimento 1 (Resuelto)
+- Impedimento 2 (Pendiente)
+
+## 🔄 Retrospectiva
+
+### ✅ Qué funcionó bien
+
+- Elemento 1
+- Elemento 2
+
+### ❌ Qué no funcionó
+
+- Elemento 1
+- Elemento 2
+
+### 💡 Ideas de mejora
+
+- Idea 1
+- Idea 2
+
+### 🎯 Acciones para el siguiente sprint
+
+- Acción 1
+- Acción 2
+```
+
+---
+
+## 🧪 TESTING (OBLIGATORIO)
+
+### Backend (Django)
+
+```bash
+# Ejecutar tests antes de commit
+pytest
+pytest --cov  # Con cobertura
+
+# Cobertura mínima: 80%
+```
+
+### Frontend (Next.js)
+
+```bash
+# Ejecutar linter
+npm run lint
+
+# Formatear código
+npx prettier --write .
+```
+
+### Pre-commit Checklist COMPLETO
+
+**Código:**
+
+- [ ] Tests pasan (backend y frontend)
+- [ ] Linter sin errores (flake8 / eslint)
+- [ ] Código formateado (black / prettier)
+- [ ] Sin warnings de compilación/type checking
+- [ ] Sin print() / console.log() en código
+
+**Documentación:**
+
+- [ ] Funciones públicas tienen docstrings/JSDoc
+- [ ] Parámetros tienen type hints/interfaces
+- [ ] Comentarios útiles agregados (si necesario)
+- [ ] Sin emojis en comentarios
+- [ ] Sin código comentado
+- [ ] Sin historial en comentarios
+- [ ] TODO/FIXME con issue asociado
+
+**Control de versiones:**
+
+- [ ] CHANGELOG.md actualizado con el cambio (OBLIGATORIO)
+- [ ] Commit message sigue Conventional Commits
+- [ ] `docs/` actualizado según corresponda (OBLIGATORIO)
+- [ ] Commit específico de documentación realizado
+- [ ] README actualizado (si aplica)
+
+---
+
+## 📦 VERSIONADO SEMÁNTICO
+
+Seguir [Semantic Versioning 2.0.0](https://semver.org/lang/es/):
+
+**MAJOR.MINOR.PATCH** (1.2.3)
+
+- **MAJOR**: Cambios incompatibles en la API
+- **MINOR**: Nueva funcionalidad compatible con versiones anteriores
+- **PATCH**: Correcciones de bugs compatibles
+
+### Cuándo incrementar cada número
+
+- **MAJOR (1.x.x → 2.0.0)**: Breaking changes
+
+  - Cambios en estructura de base de datos
+  - Cambios en API que rompen compatibilidad
+  - Eliminación de endpoints o funcionalidades
+
+- **MINOR (1.0.x → 1.1.0)**: Nuevas features
+
+  - Nuevos endpoints
+  - Nuevas funcionalidades
+  - Mejoras significativas
+
+- **PATCH (1.0.0 → 1.0.1)**: Bugfixes
+  - Correcciones de bugs
+  - Mejoras de seguridad
+  - Optimizaciones menores
+
+---
+
+## 🚀 PULL REQUEST (PROCESO OBLIGATORIO)
+
+### Template de PR
+
+```markdown
+## 📋 Descripción
+
+[Descripción clara y concisa de los cambios]
+
+## 🔗 Issue Relacionado
+
+Closes #[número]
+
+## 🎯 Tipo de Cambio
+
+- [ ] 🐛 Bug fix (non-breaking change)
+- [ ] ✨ Nueva feature (non-breaking change)
+- [ ] 💥 Breaking change (fix o feature que causa que funcionalidad existente no funcione)
+- [ ] 📝 Documentación
+- [ ] 🎨 Estilo/formato
+
+## ✅ Checklist
+
+- [ ] Mi código sigue las reglas de estilo del proyecto
+- [ ] He realizado una auto-revisión de mi código
+- [ ] He comentado mi código, especialmente en áreas difíciles
+- [ ] He actualizado la documentación correspondiente
+- [ ] Mis cambios no generan nuevos warnings
+- [ ] He agregado tests que prueban que mi fix es efectivo o que mi feature funciona
+- [ ] Tests unitarios nuevos y existentes pasan localmente
+- [ ] He actualizado el CHANGELOG.md
+
+## 📸 Screenshots (si aplica)
+
+## 🧪 Testing
+
+[Describe las pruebas que realizaste]
+
+## 📝 Notas Adicionales
+
+[Cualquier información adicional]
+```
+
+### Proceso de Revisión
+
+1. **Crear PR** hacia `dev` (nunca directo a `main`)
+2. **Asignar reviewers** (mínimo 1)
+3. **Esperar aprobación** antes de merge
+4. **Resolver conflictos** si existen
+5. **Squash and merge** para mantener historial limpio
+6. **Eliminar rama** después del merge
+
+---
+
+## 🎨 CÓDIGO LIMPIO Y DOCUMENTACIÓN (OBLIGATORIO)
+
+### 📖 Reglas Estrictas de Documentación
+
+#### Nomenclatura OBLIGATORIA
+
+1. **Funciones/Métodos/Clases**: SIEMPRE en INGLÉS
+
+   ```python
+   # ✅ CORRECTO
+   def calculate_total_price(items: List[Item]) -> Decimal:
+       pass
+
+   # ❌ INCORRECTO
+   def calcular_precio_total(items: List[Item]) -> Decimal:
+       pass
+   ```
+
+2. **Variables**: INGLÉS (variables de dominio pueden ser en español si mejora legibilidad)
+
+   ```python
+   # ✅ CORRECTO
+   user_count = 10
+   total_amount = Decimal('99.99')
+
+   # ✅ ACEPTABLE (dominio específico)
+   nombre_fiscal = "Razón Social S.A."
+   ```
+
+3. **Docstrings/JSDoc**: INGLÉS (OBLIGATORIO)
+
+   ```python
+   def process_order(order_id: int) -> Order:
+       """
+       Process an order and update inventory.
+
+       Args:
+           order_id: The unique identifier of the order
+
+       Returns:
+           The processed Order instance
+       """
+   ```
+
+4. **Comentarios en código**: ESPAÑOL
+   ```python
+   # Validar que el usuario tenga permisos antes de proceder
+   if not user.has_permission('delete'):
+       raise PermissionError()
+   ```
+
+#### ❌ PROHIBICIONES ESTRICTAS
+
+1. **NUNCA usar emojis en comentarios de código**
+
+   ```python
+   # ❌ INCORRECTO
+   # 🚀 Función super rápida
+   # ✨ Magic happens here
+
+   # ✅ CORRECTO
+   # Optimizada para grandes volúmenes de datos
+   ```
+
+2. **NUNCA incluir historial en comentarios** (usar Git)
+
+   ```python
+   # ❌ INCORRECTO
+   # Modificado por Juan el 2024-01-15
+   # Antes usaba filter(), ahora usa get()
+   # Cambiado de POST a PATCH
+
+   # ✅ CORRECTO
+   # Usar get() en lugar de filter() para mejor performance
+   ```
+
+3. **NUNCA dejar código comentado** (eliminar o usar Git)
+
+   ```python
+   # ❌ INCORRECTO
+   # old_function()
+   # previous_calculation = x * 2
+   new_calculation = calculate_value(x)
+
+   # ✅ CORRECTO
+   new_calculation = calculate_value(x)
+   ```
+
+4. **NUNCA usar TODO/FIXME sin issue asociado**
+
+   ```python
+   # ❌ INCORRECTO
+   # TODO: arreglar esto
+   # FIXME: revisar
+
+   # ✅ CORRECTO
+   # TODO(#123): Implementar paginación cuando el dataset crezca
+   ```
+
+5. **NUNCA usar print() o console.log() en producción**
+
+   ```python
+   # ❌ INCORRECTO
+   print("Debug info")
+   console.log("Value:", value)
+
+   # ✅ CORRECTO
+   logger.debug("Processing value: %s", value)
+   ```
+
+### Backend (Python/Django)
+
+**Consultar:** `backend/.cursorrules` para reglas detalladas
+
+#### Requisitos OBLIGATORIOS:
+
+- ✅ Docstrings en TODAS las funciones/clases públicas (Google Style)
+- ✅ Type hints en TODOS los parámetros y returns
+- ✅ Formateo con Black (120 caracteres)
+- ✅ Linting con Flake8 (sin errores)
+- ✅ Ordenar imports con isort
+- ✅ Tests para toda funcionalidad nueva
+- ❌ Sin imports no utilizados
+- ❌ Sin variables no utilizadas
+- ❌ Sin print() statements
+
+#### Ejemplo Completo:
+
+```python
+"""
+Module for order processing and management.
+"""
+from typing import List, Optional
+from decimal import Decimal
+from django.db import models
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+class Order(models.Model):
+    """
+    Order model representing customer purchases.
+
+    Attributes:
+        customer: Foreign key to User model
+        total: Total order amount in USD
+        status: Current order status
+    """
+
+    customer = models.ForeignKey('User', on_delete=models.CASCADE)
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, default='pending')
+
+    def calculate_total(self) -> Decimal:
+        """
+        Calculate total amount including taxes and discounts.
+
+        Returns:
+            Total order amount
+
+        Example:
+            >>> order.calculate_total()
+            Decimal('159.99')
+        """
+        # Calcular subtotal de items
+        subtotal = sum(item.price * item.quantity for item in self.items.all())
+
+        # Aplicar impuestos según región del cliente
+        tax_rate = self.customer.region.tax_rate
+        total = subtotal * (1 + tax_rate)
+
+        return total.quantize(Decimal('0.01'))
+```
+
+### Frontend (TypeScript/React)
+
+**Consultar:** `frontend/.cursorrules` para reglas detalladas
+
+#### Requisitos OBLIGATORIOS:
+
+- ✅ JSDoc para componentes complejos
+- ✅ Interfaces TypeScript para TODAS las props
+- ✅ TypeScript strict mode habilitado
+- ✅ Formateo con Prettier (100 caracteres)
+- ✅ Linting con ESLint (sin errores)
+- ✅ Tests para componentes nuevos
+- ✅ Componentes funcionales con hooks
+- ❌ Sin tipos any sin justificación
+- ❌ Sin console.log() en producción
+
+#### Ejemplo Completo:
+
+````typescript
+/**
+ * Props for the ProductCard component.
+ */
+interface ProductCardProps {
+  /** Product data to display */
+  product: Product;
+  /** Callback fired when user adds to cart */
+  onAddToCart: (productId: string) => Promise<void>;
+  /** Display mode for the card */
+  displayMode?: "grid" | "list";
+}
+
+/**
+ * ProductCard displays a product with purchase actions.
+ *
+ * Features:
+ * - Responsive image display
+ * - Stock status indicator
+ * - Add to cart with loading state
+ *
+ * @example
+ * ```tsx
+ * <ProductCard
+ *   product={product}
+ *   onAddToCart={handleAddToCart}
+ *   displayMode="grid"
+ * />
+ * ```
+ */
+export function ProductCard({
+  product,
+  onAddToCart,
+  displayMode = "grid",
+}: ProductCardProps) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  /**
+   * Handle add to cart button click.
+   * Shows loading state during the operation.
+   */
+  const handleAddToCart = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      await onAddToCart(product.id);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [product.id, onAddToCart]);
+
+  return (
+    <Card>
+      <CardContent>
+        <h3>{product.name}</h3>
+        <p>{formatPrice(product.price)}</p>
+        <Button onClick={handleAddToCart} disabled={isLoading}>
+          {isLoading ? "Adding..." : "Add to Cart"}
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+````
+
+### ✅ Checklist Pre-Commit
+
+**Backend:**
+
+- [ ] Todas las funciones públicas tienen docstrings
+- [ ] Todos los parámetros tienen type hints
+- [ ] Nombres en inglés (funciones/clases)
+- [ ] Sin emojis en comentarios
+- [ ] Sin código comentado
+- [ ] Sin historial en comentarios
+- [ ] Black ejecutado (`black .`)
+- [ ] Flake8 sin errores (`flake8 .`)
+- [ ] isort ejecutado (`isort .`)
+- [ ] Tests pasando (`pytest`)
+
+**Frontend:**
+
+- [ ] Componentes complejos tienen JSDoc
+- [ ] Todas las props tienen interfaces
+- [ ] Nombres en inglés (componentes/funciones)
+- [ ] Sin emojis en comentarios
+- [ ] Sin código comentado
+- [ ] Sin console.log() en código
+- [ ] Prettier ejecutado (`npx prettier --write .`)
+- [ ] ESLint sin errores (`npm run lint`)
+- [ ] TypeScript sin errores
+- [ ] 'use client' solo si es necesario
+
+### 📁 Documentación Adicional
+
+- **Estándares detallados:** Ver `docs/guides/code-documentation-standards.md`
+- **Ejemplos prácticos:** Ver `docs/guides/documentation-examples.md`
+- **Backend rules:** Ver `backend/.cursorrules`
+- **Frontend rules:** Ver `frontend/.cursorrules`
+- **Guía general:** Ver `DOCUMENTATION_GUIDE.md`
+
+---
+
+## 🔒 SEGURIDAD
+
+### Nunca Commitear
+
+- ❌ Contraseñas
+- ❌ API keys
+- ❌ Tokens de acceso
+- ❌ Archivos `.env`
+- ❌ Credenciales de base de datos
+
+### Usar Variables de Entorno
+
+```python
+# Backend
+from decouple import config
+SECRET_KEY = config('SECRET_KEY')
+```
+
+```typescript
+// Frontend
+const API_URL = process.env.API_URL;
+```
+
+---
+
+## 📊 DEFINICIÓN DE "DONE"
+
+Una tarea está DONE cuando:
+
+- [ ] Código implementado y funcional
+- [ ] Tests escritos y pasando
+- [ ] Documentación actualizada
+- [ ] Code review aprobado
+- [ ] CHANGELOG actualizado
+- [ ] Merged a rama correspondiente
+- [ ] Rama temporal eliminada
+- [ ] Deployado a ambiente correspondiente (si aplica)
+
+---
+
+## 🤖 INSTRUCCIONES PARA CURSOR AI
+
+### ANTES de cualquier trabajo de código
+
+1. **VERIFICAR SPRINT ACTIVO (OBLIGATORIO)**
+
+   - Verificar que existe sprint activo en `docs/sprints/sprint-N/`
+   - Leer `docs/sprints/sprint-N/user-stories.md`
+   - Verificar que la tarea solicitada está documentada
+   - Si NO existe la tarea → Preguntar al usuario y documentarla primero
+
+2. **VERIFICAR TAREA EN EL SPRINT**
+
+   - Buscar la tarea (T-XXX) en `user-stories.md`
+   - Verificar que tiene:
+     - [ ] Descripción clara
+     - [ ] Rama especificada (feature/sprintN-XXX-...)
+     - [ ] Estimación de tiempo
+     - [ ] Criterios de aceptación
+   - Si falta algo → Completar documentación primero
+
+3. **VERIFICAR RAMA DE TRABAJO**
+
+   - Verificar que sea feature/_, bugfix/_, o hotfix/\*
+   - Confirmar que coincide con la rama especificada en la tarea
+   - Confirmar que se creó desde la rama correcta (dev o main)
+
+### Al crear código
+
+4. **SIEMPRE agregar documentación apropiada:**
+
+   - Docstrings/JSDoc en funciones públicas (en INGLÉS)
+   - Type hints/interfaces en todos los parámetros
+   - Comentarios explicativos cuando sea necesario (en INGLÉS)
+   - Sin emojis en comentarios
+   - Sin historial de cambios en comentarios
+
+5. **SIEMPRE verificar nomenclatura:**
+
+   - Nombres de funciones/clases en INGLÉS
+   - Seguir convenciones: snake_case (Python) / camelCase (TS)
+   - Variables descriptivas y claras
+
+6. **SIEMPRE sugerir tests para nuevo código:**
+
+   - Tests unitarios para funciones
+   - Tests de integración para APIs
+   - Tests de componentes para React
+
+7. **SIEMPRE actualizar documentación (OBLIGATORIO):**
+
+   - CHANGELOG.md: entrada en [Unreleased] con formato correcto
+   - `docs/`: actualizar según tipo de cambio:
+     - API endpoints → `docs/api/[recurso].md`
+     - Modelos → `docs/architecture/database-schema.md`
+     - Componentes → `docs/architecture/frontend-architecture.md`
+     - Features → `docs/guides/user-guide.md`
+   - Sprint progress → `docs/sprints/sprint-N/progress.md`
+   - Commit específico de docs antes del PR
+
+8. **SIEMPRE verificar calidad:**
+   - Código formateado (black/prettier)
+   - Sin imports no utilizados
+   - Sin variables no utilizadas
+   - Sin print() o console.log()
+
+### Al hacer cambios
+
+1. **Explicar el contexto:**
+
+   - Qué archivos se van a modificar
+   - Por qué se hace el cambio
+   - Qué impacto tiene
+
+2. **Mostrar cambios importantes:**
+
+   - Diff de código crítico
+   - Breaking changes claramente marcados
+   - Migraciones necesarias
+
+3. **Sugerir mensaje de commit apropiado:**
+
+   - Formato Conventional Commits
+   - Scope correcto
+   - Descripción clara y concisa
+
+4. **Recordar actualizaciones necesarias (OBLIGATORIO):**
+   - **Sprint (PRIORIDAD 1):** Marcar checkbox `[x]` en `user-stories.md` y `progress.md`
+   - **Sprint (PRIORIDAD 1):** Mover tarea de "Pendiente" a "Completada" en `progress.md`
+   - **Sprint (PRIORIDAD 1):** Actualizar fecha de completado
+   - CHANGELOG.md SIEMPRE
+   - `docs/` según tipo de cambio (ver docs/methodology/documentation-update-guide.md)
+   - README si cambió configuración o setup
+   - Tests afectados
+   - Commit específico: `git commit -m "docs(scope): descripción"`
+
+### Al revisar código
+
+1. **Verificar estándares de código:**
+
+   - ✅ Sigue reglas de estilo del proyecto
+   - ✅ Nombres en inglés
+   - ✅ Docstrings/JSDoc en funciones públicas
+   - ✅ Type hints/interfaces presentes
+   - ❌ Sin emojis en comentarios
+   - ❌ Sin código comentado
+   - ❌ Sin historial en comentarios
+
+2. **Verificar tests:**
+
+   - Tests escritos para funcionalidad nueva
+   - Tests existentes actualizados si necesario
+   - Coverage apropiado
+
+3. **Verificar documentación:**
+
+   - CHANGELOG.md actualizado
+   - Documentación de API actualizada
+   - README actualizado si aplica
+   - Ejemplos de código correctos
+
+4. **Sugerir mejoras:**
+   - Performance optimizations
+   - Mejor legibilidad
+   - Patrones más apropiados
+   - Reducción de complejidad
+
+### Al documentar código
+
+1. **Docstrings/JSDoc (en INGLÉS):**
+
+   - Descripción clara de qué hace la función
+   - Args/Params con tipos y descripciones
+   - Returns con tipo y descripción
+   - Raises/Throws si aplica
+   - Example si es útil
+
+2. **Comentarios (en ESPAÑOL):**
+
+   - Solo cuando agregan valor
+   - Explicar el "por qué", no el "qué"
+   - Sin emojis
+   - Sin historial
+   - Sin código comentado
+
+3. **Formato consistente:**
+   - Google Style para Python
+   - TSDoc/JSDoc para TypeScript
+   - Markdown para documentación externa
+
+### Errores Comunes a EVITAR
+
+❌ **NO hacer:**
+
+- **Trabajar sin verificar sprint activo** (CRÍTICO)
+- **Empezar tarea que no está en sprint** (CRÍTICO)
+- **Olvidar marcar checkboxes al completar** (CRÍTICO)
+- **Olvidar actualizar progress.md** (CRÍTICO)
+- Crear funciones sin docstrings
+- Omitir type hints en Python
+- Omitir interfaces en TypeScript Props
+- Usar nombres en español para funciones
+- Agregar emojis en comentarios
+- Dejar código comentado
+- Poner historial en comentarios
+- Usar print() o console.log()
+- Commitear sin actualizar CHANGELOG.md
+- Crear PR sin actualizar docs/
+- Hacer PR directo a main
+- Merge sin tests pasando
+
+✅ **SÍ hacer:**
+
+- **Verificar sprint y tarea ANTES de empezar** (OBLIGATORIO)
+- **Marcar checkboxes [x] al completar tarea** (OBLIGATORIO)
+- **Actualizar progress.md SIEMPRE** (OBLIGATORIO)
+- **Referenciar tarea (T-XXX) en commits y PRs** (OBLIGATORIO)
+- Documentar todas las funciones públicas
+- Usar type hints/interfaces siempre
+- Nombres descriptivos en inglés
+- Comentarios útiles en inglés
+- Actualizar CHANGELOG.md SIEMPRE
+- Actualizar docs/ según corresponda SIEMPRE
+- Commit específico de documentación
+- Escribir tests
+- Formatear código (black/prettier)
+- Seguir Conventional Commits
+- PR a dev con revisión
+- Eliminar rama después de merge
+
+---
+
+## 📁 ARCHIVOS DE CONFIGURACIÓN DEL PROYECTO
+
+### Reglas y Estándares
+
+- `.cursorrules` - Reglas principales (este archivo)
+- `backend/.cursorrules` - Reglas específicas Python/Django
+- `frontend/.cursorrules` - Reglas específicas TypeScript/React
+- `DOCUMENTATION_GUIDE.md` - Guía completa de documentación
+
+### Documentación
+
+- `CHANGELOG.md` - Historial de cambios (MANTENER ACTUALIZADO)
+- `README.md` - Documentación general del proyecto
+- `docs/` - Documentación completa del proyecto
+- `docs/CONTRIBUTING.md` - Guía de contribución
+- `docs/guides/code-documentation-standards.md` - Estándares de código
+- `docs/guides/documentation-examples.md` - Ejemplos prácticos
+
+### Configuración de Desarrollo
+
+- `.gitignore` - Archivos ignorados por Git
+- `.editorconfig` - Configuración de editor
+- `backend/.env` - Variables de entorno backend
+- `frontend/.env.local` - Variables de entorno frontend
+- `.vscode/` - Configuración VSCode
+- `Makefile` - Comandos útiles del proyecto
+
+### Docker
+
+- `docker-compose.yml` - Configuración completa (prod)
+- `docker-compose.dev.yml` - Configuración desarrollo
+- `backend/Dockerfile` - Imagen Django
+- `frontend/Dockerfile` - Imagen Next.js
+
+---
+
+## 📚 RECURSOS EXTERNOS
+
+### Git y Versionado
+
+- [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
+- [Conventional Commits](https://www.conventionalcommits.org/)
+- [Keep a Changelog](https://keepachangelog.com/es/1.0.0/)
+- [Semantic Versioning](https://semver.org/lang/es/)
+
+### Backend (Python/Django)
+
+- [PEP 8 Style Guide](https://pep8.org/)
+- [PEP 484 Type Hints](https://www.python.org/dev/peps/pep-0484/)
+- [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+- [Django Best Practices](https://django-best-practices.readthedocs.io/)
+- [Django REST Framework](https://www.django-rest-framework.org/)
+
+### Frontend (TypeScript/React)
+
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [React TypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS](https://tailwindcss.com/docs)
+- [shadcn/ui](https://ui.shadcn.com/)
+
+### Código Limpio
+
+- [Clean Code by Robert C. Martin](https://www.oreilly.com/library/view/clean-code-a/9780136083238/)
+- [Code Complete by Steve McConnell](https://www.microsoftpressstore.com/store/code-complete-9780735619678)
+
+---
+
+## 🎯 INICIO RÁPIDO
+
+### Para nuevos desarrolladores:
+
+1. **Lee la documentación:**
+
+   - `README.md` - Visión general
+   - `SETUP.md` - Configuración del entorno
+   - `.cursorrules` - Reglas del proyecto (este archivo)
+   - `docs/CONTRIBUTING.md` - Cómo contribuir
+
+2. **Configura tu entorno:**
+
+   - Instala dependencias: `make install`
+   - Configura variables de entorno
+   - Instala extensiones VSCode recomendadas
+
+3. **Familiarízate con las reglas:**
+
+   - Git Flow y estrategia de ramas
+   - Conventional Commits para mensajes
+   - Estándares de documentación
+   - Checklist pre-commit
+
+4. **Empieza a desarrollar:**
+   - Crea rama feature desde dev
+   - Escribe código siguiendo estándares
+   - Agrega tests
+   - Actualiza CHANGELOG.md
+   - Crea Pull Request
+
+---
+
+**IMPORTANTE:**
+
+Estas reglas son **OBLIGATORIAS** y aplican a:
+
+- ✅ Todo el código del proyecto
+- ✅ Todos los commits
+- ✅ Todas las Pull Requests
+- ✅ Toda la documentación
+- ✅ Todos los miembros del equipo
+
+**No hay excepciones.** El código que no siga estas reglas será rechazado en code review.
+
+---
+
+**Última actualización:** 2025-01-XX
+**Mantenedores:** @gastonfr24
+**Versión de reglas:** 1.0.0

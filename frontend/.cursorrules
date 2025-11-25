@@ -1,0 +1,510 @@
+# Frontend - Next.js + TypeScript Rules
+
+## 📋 REGLAS ESTRICTAS DE CÓDIGO
+
+### Idioma y Nomenclatura
+
+1. **Nombres de componentes**: INGLÉS (PascalCase)
+2. **Nombres de funciones**: INGLÉS (camelCase)
+3. **Nombres de variables**: INGLÉS (camelCase)
+4. **Comentarios**: ESPAÑOL (solo cuando sea necesario)
+5. **JSDoc**: INGLÉS (para componentes complejos)
+
+### Documentación de Componentes (OBLIGATORIO para complejos)
+
+#### Formato JSDoc
+
+```typescript
+/**
+ * ProductCard component displays product information with actions.
+ * 
+ * This component handles product display, add to cart functionality,
+ * and favorite/wishlist actions. It supports different display modes
+ * (grid/list) and loading states.
+ * 
+ * @component
+ * @example
+ * ```tsx
+ * <ProductCard 
+ *   product={product}
+ *   onAddToCart={handleAddToCart}
+ *   displayMode="grid"
+ * />
+ * ```
+ */
+export function ProductCard({ product, onAddToCart, displayMode }: ProductCardProps) {
+  // Implementation
+}
+```
+
+#### Interfaces y Types (OBLIGATORIO)
+
+```typescript
+/**
+ * Props for the ProductCard component.
+ */
+interface ProductCardProps {
+  /** Product data to display */
+  product: Product
+  /** Callback fired when user clicks add to cart */
+  onAddToCart: (productId: string) => void
+  /** Display mode for the card */
+  displayMode?: 'grid' | 'list'
+  /** Whether the card should show loading state */
+  isLoading?: boolean
+}
+
+/**
+ * Product data structure from the API.
+ */
+interface Product {
+  /** Unique product identifier */
+  id: string
+  /** Product name */
+  name: string
+  /** Product description in markdown format */
+  description: string
+  /** Price in USD */
+  price: number
+  /** Product category */
+  category: Category
+  /** Product images URLs */
+  images: string[]
+  /** Whether the product is in stock */
+  inStock: boolean
+}
+```
+
+#### Funciones Utilitarias
+
+```typescript
+/**
+ * Format a price value to USD currency string.
+ * 
+ * @param price - The price value to format
+ * @param includeSymbol - Whether to include the $ symbol
+ * @returns Formatted price string
+ * 
+ * @example
+ * ```ts
+ * formatPrice(29.99) // "$29.99"
+ * formatPrice(29.99, false) // "29.99"
+ * ```
+ */
+export function formatPrice(price: number, includeSymbol: boolean = true): string {
+  const formatted = price.toFixed(2)
+  return includeSymbol ? `$${formatted}` : formatted
+}
+```
+
+#### Hooks Personalizados
+
+```typescript
+/**
+ * Custom hook for managing shopping cart state.
+ * 
+ * This hook provides cart operations including add, remove, update quantity,
+ * and clear. It persists cart data to localStorage and calculates totals
+ * automatically.
+ * 
+ * @returns Cart state and operations
+ * 
+ * @example
+ * ```tsx
+ * const { items, total, addItem, removeItem } = useCart()
+ * ```
+ */
+export function useCart() {
+  const [items, setItems] = useState<CartItem[]>([])
+  
+  /**
+   * Add an item to the cart or increment quantity if exists.
+   * 
+   * @param productId - The product ID to add
+   * @param quantity - Quantity to add (default: 1)
+   */
+  const addItem = useCallback((productId: string, quantity: number = 1) => {
+    // Implementation
+  }, [])
+  
+  return { items, total, addItem, removeItem }
+}
+```
+
+### Componentes React
+
+#### Estructura de Componente
+
+```typescript
+'use client'
+
+import { useState, useCallback, useEffect } from 'react'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { formatPrice } from '@/lib/utils'
+import type { Product } from '@/types'
+
+interface ProductCardProps {
+  product: Product
+  onAddToCart: (productId: string) => void
+}
+
+/**
+ * ProductCard displays a single product with add to cart action.
+ */
+export function ProductCard({ product, onAddToCart }: ProductCardProps) {
+  const [isLoading, setIsLoading] = useState(false)
+  
+  /**
+   * Handle add to cart button click.
+   * Shows loading state and calls the callback.
+   */
+  const handleAddToCart = useCallback(async () => {
+    setIsLoading(true)
+    try {
+      await onAddToCart(product.id)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [product.id, onAddToCart])
+  
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{product.name}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-2xl font-bold">
+          {formatPrice(product.price)}
+        </p>
+        <Button 
+          onClick={handleAddToCart}
+          disabled={isLoading || !product.inStock}
+        >
+          {isLoading ? 'Adding...' : 'Add to Cart'}
+        </Button>
+      </CardContent>
+    </Card>
+  )
+}
+```
+
+### Server Components y Client Components
+
+```typescript
+// ✅ CORRECTO - Server Component (por defecto)
+import { getProducts } from '@/lib/api'
+
+interface ProductsPageProps {
+  searchParams: { category?: string }
+}
+
+/**
+ * Products page displaying product catalog with filtering.
+ * Server component that fetches data at request time.
+ */
+export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+  const products = await getProducts({ category: searchParams.category })
+  
+  return (
+    <div>
+      <h1>Products</h1>
+      <ProductGrid products={products} />
+    </div>
+  )
+}
+
+// ✅ CORRECTO - Client Component (cuando se necesita interactividad)
+'use client'
+
+import { useState } from 'react'
+
+/**
+ * ProductGrid displays products in a responsive grid with sorting.
+ * Client component for interactive sorting functionality.
+ */
+export function ProductGrid({ products }: ProductGridProps) {
+  const [sortBy, setSortBy] = useState<'price' | 'name'>('name')
+  
+  // Implementation
+}
+```
+
+### API Client y Data Fetching
+
+```typescript
+/**
+ * API client for product-related endpoints.
+ * Handles all HTTP requests to the products API.
+ */
+
+import axios from 'axios'
+import type { Product, ProductFilters } from '@/types'
+
+const API_URL = process.env.API_URL || 'http://localhost:8000/api'
+
+/**
+ * Fetch all products with optional filtering.
+ * 
+ * @param filters - Optional filters for products
+ * @returns Promise resolving to array of products
+ * @throws {APIError} If the request fails
+ * 
+ * @example
+ * ```ts
+ * const products = await getProducts({ category: 'electronics' })
+ * ```
+ */
+export async function getProducts(
+  filters?: ProductFilters
+): Promise<Product[]> {
+  try {
+    const response = await axios.get(`${API_URL}/products/`, {
+      params: filters,
+    })
+    return response.data
+  } catch (error) {
+    console.error('Failed to fetch products:', error)
+    throw new APIError('Failed to fetch products')
+  }
+}
+
+/**
+ * Fetch a single product by ID.
+ * 
+ * @param id - Product ID
+ * @returns Promise resolving to product data
+ * @throws {APIError} If product not found or request fails
+ */
+export async function getProductById(id: string): Promise<Product> {
+  const response = await axios.get(`${API_URL}/products/${id}/`)
+  return response.data
+}
+```
+
+### Comentarios en Código
+
+#### ✅ Buenos Comentarios
+
+```typescript
+// Validar que el usuario esté autenticado antes de proceder
+if (!session) {
+  redirect('/login')
+}
+
+// Calcular el precio total incluyendo impuestos
+const taxRate = getTaxRate(user.region)
+const totalWithTax = subtotal * (1 + taxRate)
+
+// Filtrar productos por categoría y disponibilidad
+const availableProducts = products.filter(
+  (p) => p.category === selectedCategory && p.inStock
+)
+```
+
+#### ❌ Malos Comentarios
+
+```typescript
+// ❌ NO - Comentario obvio
+// Incrementar contador
+setCount(count + 1)
+
+// ❌ NO - Historial de cambios (usar Git)
+// Antes se usaba useState, ahora usamos useReducer
+// Modificado el 2024-01-15 por Juan
+
+// ❌ NO - Emojis
+// 🚀 Componente super rápido
+
+// ❌ NO - Código comentado (eliminar)
+// const oldMethod = () => {}
+// <OldComponent />
+
+// ❌ NO - Comentarios vagos
+// Hacer algo aquí
+// Fix temporal
+// TODO: arreglar esto
+```
+
+### Manejo de Errores
+
+```typescript
+/**
+ * Fetch user profile with error handling and loading states.
+ */
+export function useUserProfile(userId: string) {
+  const [profile, setProfile] = useState<UserProfile | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
+  
+  useEffect(() => {
+    let cancelled = false
+    
+    async function fetchProfile() {
+      try {
+        setIsLoading(true)
+        setError(null)
+        
+        const data = await getUserProfile(userId)
+        
+        if (!cancelled) {
+          setProfile(data)
+        }
+      } catch (err) {
+        if (!cancelled) {
+          console.error('Failed to fetch user profile:', err)
+          setError(err instanceof Error ? err : new Error('Unknown error'))
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false)
+        }
+      }
+    }
+    
+    fetchProfile()
+    
+    return () => {
+      cancelled = true
+    }
+  }, [userId])
+  
+  return { profile, isLoading, error }
+}
+```
+
+### Constantes y Configuración
+
+```typescript
+/**
+ * Configuration constants for the application.
+ */
+
+/** API base URL */
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
+
+/** Pagination settings */
+export const PRODUCTS_PER_PAGE = 20
+export const MAX_PRODUCTS_PER_PAGE = 100
+
+/** Cache durations (milliseconds) */
+export const CACHE_DURATIONS = {
+  products: 5 * 60 * 1000, // 5 minutes
+  categories: 60 * 60 * 1000, // 1 hour
+  user: 10 * 60 * 1000, // 10 minutes
+} as const
+
+/** Validation rules */
+export const VALIDATION = {
+  minPasswordLength: 8,
+  maxEmailLength: 255,
+  maxNameLength: 100,
+} as const
+```
+
+### Imports (Orden OBLIGATORIO)
+
+```typescript
+// 1. React y Next.js
+import { useState, useEffect, useCallback } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import Image from 'next/image'
+import Link from 'next/link'
+
+// 2. Third-party libraries
+import axios from 'axios'
+import { toast } from 'sonner'
+
+// 3. Componentes UI
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+
+// 4. Componentes locales
+import { ProductCard } from '@/components/products/product-card'
+import { LoadingSpinner } from '@/components/loading-spinner'
+
+// 5. Hooks y utilidades
+import { useCart } from '@/hooks/use-cart'
+import { formatPrice, cn } from '@/lib/utils'
+
+// 6. Types
+import type { Product, Category } from '@/types'
+```
+
+## ❌ PROHIBICIONES ESTRICTAS
+
+### NO permitido
+
+```typescript
+// ❌ NO - Componente sin tipos en props
+function ProductCard({ product, onAddToCart }) {
+  return <div>{product.name}</div>
+}
+
+// ❌ NO - Any sin justificación
+function handleData(data: any) {
+  return data
+}
+
+// ❌ NO - Comentarios con emojis
+// 🚀 Super componente rápido
+
+// ❌ NO - Código comentado
+// const oldComponent = <OldComponent />
+// function oldMethod() {}
+
+// ❌ NO - Comentarios de historial
+// Modificado por Juan el 2024-01-15
+// Antes usaba props, ahora usa context
+
+// ❌ NO - Console.log en producción
+console.log('Debug info')
+
+// ❌ NO - Funciones sin tipos de retorno
+function calculate(a: number, b: number) {
+  return a + b
+}
+
+// ❌ NO - Nombres en español
+function obtenerProductos() {
+  // ...
+}
+
+// ❌ NO - useEffect sin dependencias explicadas
+useEffect(() => {
+  fetchData()
+}, []) // ¿Por qué vacío? Agregar comentario si es intencional
+
+// ❌ NO - Catch sin manejo
+try {
+  something()
+} catch (e) {
+  // Silent fail
+}
+```
+
+## ✅ CHECKLIST DE CÓDIGO
+
+Antes de hacer commit, verificar:
+
+- [ ] Componentes complejos tienen JSDoc
+- [ ] Todas las props tienen interfaces TypeScript
+- [ ] Nombres de componentes/funciones en inglés
+- [ ] Sin emojis en comentarios
+- [ ] Sin código comentado
+- [ ] Sin historial en comentarios
+- [ ] Imports ordenados correctamente
+- [ ] Tests escritos para nueva funcionalidad
+- [ ] Sin console.log() en código de producción
+- [ ] ESLint sin errores
+- [ ] Prettier ejecutado (formateo)
+- [ ] TypeScript sin errores
+- [ ] Componentes tienen 'use client' solo si es necesario
+
+## 📚 Referencias
+
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [React TypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Airbnb React Style Guide](https://github.com/airbnb/javascript/tree/master/react)
+

@@ -1,0 +1,140 @@
+# Changelog
+
+Todos los cambios notables de este proyecto serán documentados en este archivo.
+
+El formato está basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
+y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
+
+## [Unreleased]
+
+### Added
+- Configuración inicial del proyecto
+- Backend Django 5.0 con Django REST Framework
+- Frontend Next.js 14 con TypeScript
+- Tailwind CSS y shadcn/ui para estilos y componentes
+- Docker y Docker Compose para containerización
+- Configuración de Git Flow y Conventional Commits
+- Estructura de documentación profesional en `docs/`
+- Sistema de reglas estrictas en `.cursorrules`
+- Reglas específicas de código en `backend/.cursorrules` y `frontend/.cursorrules`
+- Health check endpoint en `/api/health/`
+- Componentes UI base: Button, Card, Badge
+- Sprint 1 planificado y documentado en `docs/sprints/sprint-1/`
+  - 5 User Stories (30 story points)
+  - 27 tareas técnicas detalladas con estimaciones
+  - Documentos: planning.md, user-stories.md, progress.md, retrospective.md
+- Reglas obligatorias de trabajo con sprints agregadas a `.cursorrules`
+  - TODO el trabajo debe estar en un sprint activo
+  - Sistema de checkboxes para tracking de tareas
+  - Actualización diaria obligatoria de progress.md
+  - Proceso completo documentado en `docs/methodology/sprint-format-guide.md`
+
+### Documentation
+- Guía completa de setup y configuración (SETUP.md)
+- Documentación de arquitectura base
+- Guías de Git Flow y estrategia de branches
+- Plantillas de commits y Pull Requests
+- Estándares estrictos de documentación de código
+- Guía de documentación del proyecto (DOCUMENTATION_GUIDE.md)
+- Ejemplos prácticos de documentación (docs/guides/documentation-examples.md)
+- Estándares de documentación de código (docs/guides/code-documentation-standards.md)
+- CONTRIBUTING.md con proceso de contribución detallado
+- CODE_OF_CONDUCT.md basado en Contributor Covenant
+
+### Configuration
+- Git configurado para usuario gastonfr24
+- Linters y formateadores: flake8, black, isort, prettier, eslint
+- VSCode settings y extensiones recomendadas
+- EditorConfig para consistencia entre editores
+- Makefile con comandos útiles
+- Docker compose para desarrollo y producción
+- Variables de entorno configuradas (.env files)
+
+## [0.1.0] - 2025-01-XX
+
+### Added
+- Configuración inicial del repositorio
+- Estructura base de carpetas backend/frontend
+- Configuración de entornos virtuales
+- Archivos de configuración Docker
+- Linters y formateadores (flake8, black, prettier, eslint)
+- Configuración de VSCode
+- README y guías de inicio
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+### Security
+- Configuración de variables de entorno
+- .gitignore para archivos sensibles
+
+---
+
+## Notas de Versionado
+
+### Versión Actual
+**v0.1.0** - Configuración inicial y estructura base del proyecto
+
+### Próxima Release
+**v1.0.0** - Primera versión funcional con:
+- Sistema de autenticación completo
+- Catálogo de productos básico
+- API RESTful documentada
+- Frontend funcional con UI moderna
+
+### Roadmap
+
+#### v1.1.0 (Sprint 2)
+- Carrito de compras
+- Gestión de órdenes
+- Panel de administración mejorado
+
+#### v1.2.0 (Sprint 3)
+- Sistema de pagos
+- Notificaciones por email
+- Dashboard de analytics
+
+#### v2.0.0 (Sprint 4+)
+- Sistema de recomendaciones
+- Búsqueda avanzada
+- Multi-idioma
+
+---
+
+## Convenciones de Changelog
+
+### Categorías
+
+- **Added**: Nuevas funcionalidades
+- **Changed**: Cambios en funcionalidad existente
+- **Deprecated**: Funcionalidades que se eliminarán pronto
+- **Removed**: Funcionalidades eliminadas
+- **Fixed**: Correcciones de bugs
+- **Security**: Correcciones de seguridad
+
+### Formato de Entradas
+
+```markdown
+### Added
+- feat(scope): descripción del cambio (#PR)
+```
+
+### Enlaces a Versiones
+
+[Unreleased]: https://github.com/gastonfr24/comercio/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/gastonfr24/comercio/releases/tag/v0.1.0
+
+---
+
+**Mantenido por:** @gastonfr24  
+**Última actualización:** 2025-01-XX
+
