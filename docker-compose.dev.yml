@@ -28,8 +28,8 @@ services:
     container_name: comercio_frontend_dev
     volumes:
       - ./frontend:/app
-      - /app/node_modules
-      - /app/.next
+      - frontend_node_modules:/app/node_modules
+      - frontend_next:/app/.next
     ports:
       - "3000:3000"
     env_file:
@@ -39,6 +39,10 @@ services:
     networks:
       - comercio_network_dev
     command: npm run dev
+
+volumes:
+  frontend_node_modules:
+  frontend_next:
 
 networks:
   comercio_network_dev:
