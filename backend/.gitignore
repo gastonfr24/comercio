@@ -36,6 +36,9 @@ db.sqlite3-journal
 .env.local
 .env.dev
 
+# Development scripts
+create_superuser.py
+
 # IDEs
 .vscode/
 .idea/

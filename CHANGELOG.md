@@ -38,6 +38,16 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
   - 16 tests unitarios comprehensivos (100% passing)
   - Django admin configurado con filtros y edición inline
   - Migraciones aplicadas exitosamente
+- **Sprint 1 - T-002 Completada:** API REST para productos
+  - ProductSerializer completo y ProductListSerializer ligero
+  - ProductViewSet con operaciones CRUD completas
+  - Filtrado por category e is_active
+  - Búsqueda por name y barcode (case-insensitive)
+  - Ordenamiento por name, price, stock, created_at
+  - Paginación (20 items por página, customizable)
+  - django-filter integrado para filtros avanzados
+  - 17 tests de API (100% passing)
+  - Endpoints: GET /api/products/, POST, GET /api/products/{id}/, PUT, PATCH, DELETE
 
 ### Changed
 
