@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 # Configuración simplificada para desarrollo local
 # Uso: docker-compose -f docker-compose.dev.yml up
@@ -15,13 +15,8 @@ services:
       - ./backend:/app
     ports:
       - "8000:8000"
-    environment:
-      - DEBUG=True
-      - SECRET_KEY=django-insecure-dev-key-123456789
-      - DB_ENGINE=django.db.backends.sqlite3
-      - DB_NAME=db.sqlite3
-      - ALLOWED_HOSTS=localhost,127.0.0.1,backend
-      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+    env_file:
+      - ./backend/.env.dev
     networks:
       - comercio_network_dev
 
@@ -30,6 +25,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - ENV_FILE=.env.development
     container_name: comercio_frontend_dev
     volumes:
       - ./frontend:/app
@@ -37,9 +34,8 @@ services:
       - /app/.next
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=development
-      - API_URL=http://backend:8000/api
+    env_file:
+      - ./frontend/.env.development
     depends_on:
       - backend
     networks:
@@ -49,4 +45,3 @@ services:
 networks:
   comercio_network_dev:
     driver: bridge
-
