@@ -1,19 +1,31 @@
-# Comercio - E-commerce Platform
+# Comercio - Sistema de Kiosco
 
-Plataforma completa de comercio electrónico construida con Django (backend) y Next.js (frontend).
+Sistema de punto de venta (POS) diseñado específicamente para kioscos, con interfaz intuitiva y gestión completa de ventas, productos, stock y caja. Construido con Django (backend) y Next.js (frontend).
+
+## ✨ Características Principales
+
+- 🛒 **Punto de Venta Rápido**: Interfaz optimizada para ventas ágiles con soporte de escáner de códigos de barras
+- 📦 **Gestión de Productos**: Control completo de inventario con categorías y stock en tiempo real
+- 💰 **Control de Caja**: Apertura/cierre de caja con conciliación automática
+- 💳 **Múltiples Métodos de Pago**: Efectivo, tarjeta y otros medios
+- 📊 **Reportes en Tiempo Real**: Visualización de ventas y métricas del día
+- 🎨 **Interfaz Táctil**: Diseñada para uso fácil incluso sin experiencia en computadoras
 
 ## 🚀 Tecnologías
 
 ### Backend
 - Django 5.0
 - Django REST Framework
-- Python 3.10+
+- Python 3.12+
 - SQLite (desarrollo) / PostgreSQL (producción)
+- Docker & Docker Compose
 
 ### Frontend
-- Next.js 14
+- Next.js 14 (App Router)
 - React 18
 - TypeScript
+- Tailwind CSS
+- shadcn/ui
 - Axios
 
 ## 📁 Estructura del Proyecto
@@ -36,7 +48,30 @@ comercio/
 
 ## 🛠️ Instalación
 
-### Backend (Django)
+### Opción 1: Docker (Recomendado)
+
+La forma más rápida de ejecutar el proyecto:
+
+```bash
+# Clonar el repositorio
+git clone https://github.com/gastonfr24/comercio.git
+cd comercio
+
+# Desarrollo (SQLite)
+docker-compose -f docker-compose.dev.yml up --build
+
+# Producción (PostgreSQL)
+docker-compose up --build
+```
+
+**URLs:**
+- Backend: `http://localhost:8000`
+- Frontend: `http://localhost:3000`
+- Admin: `http://localhost:8000/admin/`
+
+### Opción 2: Instalación Manual
+
+#### Backend (Django)
 
 1. Navegar a la carpeta backend:
 ```bash
@@ -105,50 +140,61 @@ npm run dev
 
 El frontend estará disponible en: `http://localhost:3000`
 
-## 🎯 Endpoints disponibles
+## 🎯 Endpoints API
 
 ### Backend
-- Admin: `http://localhost:8000/admin/`
-- API Health Check: `http://localhost:8000/api/health/`
+- **Admin Panel**: `http://localhost:8000/admin/`
+- **Health Check**: `http://localhost:8000/api/health/`
+- **Products API**: `http://localhost:8000/api/products/`
+- **Sales API**: `http://localhost:8000/api/sales/`
+- **Cash Register API**: `http://localhost:8000/api/cash-register/`
+- **Reports API**: `http://localhost:8000/api/reports/`
 
 ### Frontend
-- Página principal: `http://localhost:3000`
+- **POS (Punto de Venta)**: `http://localhost:3000/pos`
+- **Productos**: `http://localhost:3000/products`
+- **Caja**: `http://localhost:3000/cash`
+- **Reportes**: `http://localhost:3000/reports`
 
-## 📝 Próximos pasos
+## 📚 Documentación
 
-### Backend
-- [ ] Crear modelos de datos (Productos, Usuarios, Órdenes, etc.)
-- [ ] Implementar autenticación JWT
-- [ ] Crear endpoints RESTful para el CRUD
-- [ ] Implementar permisos y roles
-- [ ] Agregar paginación y filtros
-- [ ] Configurar PostgreSQL para producción
+Para más información sobre el proyecto, consulta la carpeta `docs/`:
 
-### Frontend
-- [ ] Crear páginas principales (Home, Productos, Carrito, Perfil)
-- [ ] Implementar sistema de autenticación
-- [ ] Crear componentes reutilizables
-- [ ] Agregar gestión de estado
-- [ ] Implementar carrito de compras
-- [ ] Agregar procesamiento de pagos
+- **[SETUP.md](SETUP.md)**: Guía completa de instalación y configuración
+- **[CONTRIBUTING.md](docs/CONTRIBUTING.md)**: Guía de contribución y estándares
+- **[docs/methodology/](docs/methodology/)**: Metodología de desarrollo y sprints
+- **[docs/guides/](docs/guides/)**: Guías de código y documentación
+
+## 🔄 Metodología de Desarrollo
+
+Este proyecto sigue estrictas prácticas profesionales:
+
+- ✅ **Git Flow**: Ramas main, dev, feature/*, bugfix/*, hotfix/*
+- ✅ **Conventional Commits**: Mensajes de commit estandarizados
+- ✅ **Sprints Documentados**: Todo el trabajo organizado en sprints de 2 semanas
+- ✅ **Documentación Completa**: Código documentado en inglés con docstrings y JSDoc
+- ✅ **Testing**: Tests unitarios y de integración
+- ✅ **Code Review**: Pull requests con revisión obligatoria
+
+Ver [`.cursorrules`](.cursorrules) para las reglas completas del proyecto.
 
 ## 🤝 Contribuir
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+Lee la [Guía de Contribución](docs/CONTRIBUTING.md) para conocer el proceso y estándares del proyecto.
+
+**Resumen:**
+1. Verifica que existe un sprint activo
+2. Busca la tarea en `docs/sprints/sprint-N/user-stories.md`
+3. Crea una rama feature desde dev
+4. Desarrolla siguiendo los estándares de código
+5. Actualiza documentación y tests
+6. Crea Pull Request hacia dev
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT.
+Este proyecto es privado y está bajo desarrollo activo.
 
 ## 👥 Autores
 
-Tu nombre aquí
-
-## 📧 Contacto
-
-Tu email aquí
+- **Gastón Franco** - [@gastonfr24](https://github.com/gastonfr24)
 
