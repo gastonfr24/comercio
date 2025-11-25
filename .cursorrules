@@ -141,21 +141,72 @@ Si surge una tarea nueva:
 
 ## 🌿 GIT FLOW - ESTRATEGIA DE RAMAS (ESTRICTO)
 
+### ⚠️ REGLA CRÍTICA DE GIT FLOW
+
+**NUNCA TRABAJAR DIRECTAMENTE EN `main`**
+
+Esta es una regla FUNDAMENTAL e INQUEBRANTABLE:
+
+1. **TODO cambio DEBE pasar por `dev` primero**
+
+   - ❌ NUNCA hacer commits directos en `main`
+   - ❌ NUNCA hacer push directo a `main`
+   - ❌ NUNCA crear ramas desde `main` (excepto hotfix)
+   - ✅ SIEMPRE trabajar en `feature/*` desde `dev`
+   - ✅ SIEMPRE mergear feature → dev primero
+
+2. **`dev` debe estar SIEMPRE actualizado**
+
+   - `dev` es la rama de integración continua
+   - TODOS los cambios pasan por `dev`
+   - `main` NUNCA debe tener commits que `dev` no tiene
+   - Esto es MALA PRÁCTICA y rompe el flujo
+
+3. **`main` solo se actualiza al FINAL del sprint**
+
+   - Al completar un sprint exitosamente
+   - Con una nueva versión (release)
+   - Mediante `release/*` branch
+   - Con tag de versión (v1.0.0, v1.1.0, etc.)
+
+4. **NUNCA usar `git push --force`**
+   - ❌ Prohibido en `main` y `dev`
+   - ❌ Prohibido en ramas compartidas
+   - Solo permitido en ramas feature personales (con extrema precaución)
+
+**Flujo correcto:**
+
+```
+feature/sprint1-001 → dev → release/v1.0.0 → main
+                      ↑                        ↑
+                   (PR review)           (al final sprint)
+```
+
+**Flujo INCORRECTO (NUNCA HACER):**
+
+```
+❌ feature → main (directo)
+❌ cambios en main que dev no tiene
+❌ push --force a main o dev
+```
+
 ### Ramas Principales (NUNCA ELIMINAR)
 
 1. **`main`** (Producción)
 
-   - Solo código en producción
+   - Solo código en producción validado
    - SOLO acepta merges de `release/*` o `hotfix/*`
    - SIEMPRE debe estar funcional
    - Tag con versión semántica (v1.0.0)
    - Protegida: requiere pull request y revisión
+   - **SE ACTUALIZA: Solo al final de cada sprint**
 
 2. **`dev`** (Desarrollo)
-   - Rama de integración
+   - Rama de integración continua
    - Acepta merges de `feature/*`, `bugfix/*`
-   - Base para nuevas features
+   - Base para TODAS las nuevas features
    - Debe pasar todos los tests antes de merge
+   - **SIEMPRE debe estar más adelante o igual que main**
 
 ### Ramas Temporales (SE ELIMINAN después del merge)
 
