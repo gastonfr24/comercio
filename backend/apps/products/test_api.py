@@ -1,6 +1,7 @@
 """
 API tests for products app.
 """
+
 from decimal import Decimal
 import pytest
 from rest_framework.test import APIClient
@@ -72,100 +73,100 @@ class TestProductListAPI:
     """
     Tests for GET /api/products/ endpoint.
     """
-    
+
     def test_list_products(self, api_client, sample_products):
         """
         Test listing all active products.
         """
-        response = api_client.get('/api/products/')
-        
+        response = api_client.get("/api/products/")
+
         assert response.status_code == status.HTTP_200_OK
-        assert 'results' in response.data
-        assert 'count' in response.data
-        
+        assert "results" in response.data
+        assert "count" in response.data
+
         # Solo productos activos (4 de 5)
-        assert response.data['count'] == 4
-        
+        assert response.data["count"] == 4
+
         # Verificar campos del serializer ligero
-        first_product = response.data['results'][0]
-        assert 'id' in first_product
-        assert 'barcode' in first_product
-        assert 'name' in first_product
-        assert 'price' in first_product
-        assert 'stock' in first_product
-        assert 'category' in first_product
-        assert 'profit_margin' in first_product
-        assert 'in_stock' in first_product
-        
+        first_product = response.data["results"][0]
+        assert "id" in first_product
+        assert "barcode" in first_product
+        assert "name" in first_product
+        assert "price" in first_product
+        assert "stock" in first_product
+        assert "category" in first_product
+        assert "profit_margin" in first_product
+        assert "in_stock" in first_product
+
         # No debe incluir campos del serializer completo
-        assert 'cost' not in first_product
-    
+        assert "cost" not in first_product
+
     def test_list_includes_inactive_when_requested(self, api_client, sample_products):
         """
         Test listing products including inactive ones.
         """
-        response = api_client.get('/api/products/?is_active=false')
-        
+        response = api_client.get("/api/products/?is_active=false")
+
         assert response.status_code == status.HTTP_200_OK
         # Debe incluir el producto inactivo
-        names = [p['name'] for p in response.data['results']]
-        assert 'Producto Inactivo' in names
-    
+        names = [p["name"] for p in response.data["results"]]
+        assert "Producto Inactivo" in names
+
     def test_filter_by_category(self, api_client, sample_products):
         """
         Test filtering products by category.
         """
-        response = api_client.get('/api/products/?category=Bebidas')
-        
+        response = api_client.get("/api/products/?category=Bebidas")
+
         assert response.status_code == status.HTTP_200_OK
-        assert response.data['count'] == 2
-        
-        categories = {p['category'] for p in response.data['results']}
-        assert categories == {'Bebidas'}
-    
+        assert response.data["count"] == 2
+
+        categories = {p["category"] for p in response.data["results"]}
+        assert categories == {"Bebidas"}
+
     def test_search_by_name(self, api_client, sample_products):
         """
         Test searching products by name.
         """
-        response = api_client.get('/api/products/?search=cola')
-        
+        response = api_client.get("/api/products/?search=cola")
+
         assert response.status_code == status.HTTP_200_OK
-        assert response.data['count'] == 1
-        assert 'Coca Cola' in response.data['results'][0]['name']
-    
+        assert response.data["count"] == 1
+        assert "Coca Cola" in response.data["results"][0]["name"]
+
     def test_search_by_barcode(self, api_client, sample_products):
         """
         Test searching products by barcode.
         """
-        response = api_client.get('/api/products/?search=123456')
-        
+        response = api_client.get("/api/products/?search=123456")
+
         assert response.status_code == status.HTTP_200_OK
-        assert response.data['count'] == 1
-        assert response.data['results'][0]['barcode'] == '123456789'
-    
+        assert response.data["count"] == 1
+        assert response.data["results"][0]["barcode"] == "123456789"
+
     def test_ordering_by_name(self, api_client, sample_products):
         """
         Test ordering products by name.
         """
-        response = api_client.get('/api/products/')
-        
+        response = api_client.get("/api/products/")
+
         assert response.status_code == status.HTTP_200_OK
-        names = [p['name'] for p in response.data['results']]
-        
+        names = [p["name"] for p in response.data["results"]]
+
         # Default ordering is by name
         assert names == sorted(names)
-    
+
     def test_ordering_by_price(self, api_client, sample_products):
         """
         Test ordering products by price.
         """
-        response = api_client.get('/api/products/?ordering=price')
-        
+        response = api_client.get("/api/products/?ordering=price")
+
         assert response.status_code == status.HTTP_200_OK
-        prices = [Decimal(str(p['price'])) for p in response.data['results']]
-        
+        prices = [Decimal(str(p["price"])) for p in response.data["results"]]
+
         assert prices == sorted(prices)
-    
+
     def test_pagination(self, api_client, db):
         """
         Test pagination of products.
@@ -179,26 +180,26 @@ class TestProductListAPI:
                 cost=Decimal("5.00"),
                 stock=10,
             )
-        
+
         # Primera página (default: 20 items)
-        response = api_client.get('/api/products/')
+        response = api_client.get("/api/products/")
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data['results']) == 20
-        assert response.data['count'] == 25
-        
+        assert len(response.data["results"]) == 20
+        assert response.data["count"] == 25
+
         # Segunda página
-        response = api_client.get('/api/products/?page=2')
+        response = api_client.get("/api/products/?page=2")
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data['results']) == 5
-    
+        assert len(response.data["results"]) == 5
+
     def test_custom_page_size(self, api_client, sample_products):
         """
         Test custom page size.
         """
-        response = api_client.get('/api/products/?page_size=2')
-        
+        response = api_client.get("/api/products/?page_size=2")
+
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data['results']) == 2
+        assert len(response.data["results"]) == 2
 
 
 @pytest.mark.django_db
@@ -206,31 +207,31 @@ class TestProductDetailAPI:
     """
     Tests for GET /api/products/{id}/ endpoint.
     """
-    
+
     def test_get_product_detail(self, api_client, sample_products):
         """
         Test getting product detail.
         """
         product = sample_products[0]
-        response = api_client.get(f'/api/products/{product.id}/')
-        
+        response = api_client.get(f"/api/products/{product.id}/")
+
         assert response.status_code == status.HTTP_200_OK
-        assert response.data['id'] == product.id
-        assert response.data['barcode'] == product.barcode
-        assert response.data['name'] == product.name
-        
+        assert response.data["id"] == product.id
+        assert response.data["barcode"] == product.barcode
+        assert response.data["name"] == product.name
+
         # Debe incluir todos los campos del serializer completo
-        assert 'cost' in response.data
-        assert 'profit_margin' in response.data
-        assert 'created_at' in response.data
-        assert 'updated_at' in response.data
-    
+        assert "cost" in response.data
+        assert "profit_margin" in response.data
+        assert "created_at" in response.data
+        assert "updated_at" in response.data
+
     def test_get_nonexistent_product(self, api_client):
         """
         Test getting a product that doesn't exist.
         """
-        response = api_client.get('/api/products/99999/')
-        
+        response = api_client.get("/api/products/99999/")
+
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
@@ -239,60 +240,60 @@ class TestProductCreateAPI:
     """
     Tests for POST /api/products/ endpoint.
     """
-    
+
     def test_create_product(self, api_client):
         """
         Test creating a new product.
         """
         data = {
-            'barcode': '555666777',
-            'name': 'New Product',
-            'price': '10.00',
-            'cost': '6.00',
-            'stock': 20,
-            'category': 'Test',
+            "barcode": "555666777",
+            "name": "New Product",
+            "price": "10.00",
+            "cost": "6.00",
+            "stock": 20,
+            "category": "Test",
         }
-        
-        response = api_client.post('/api/products/', data, format='json')
-        
+
+        response = api_client.post("/api/products/", data, format="json")
+
         assert response.status_code == status.HTTP_201_CREATED
-        assert response.data['barcode'] == '555666777'
-        assert response.data['name'] == 'New Product'
-        
+        assert response.data["barcode"] == "555666777"
+        assert response.data["name"] == "New Product"
+
         # Verificar que se creó en la base de datos
-        assert Product.objects.filter(barcode='555666777').exists()
-    
+        assert Product.objects.filter(barcode="555666777").exists()
+
     def test_create_product_with_invalid_price(self, api_client):
         """
         Test creating a product with price lower than cost.
         """
         data = {
-            'barcode': '555666777',
-            'name': 'Invalid Product',
-            'price': '5.00',
-            'cost': '10.00',
-            'stock': 20,
+            "barcode": "555666777",
+            "name": "Invalid Product",
+            "price": "5.00",
+            "cost": "10.00",
+            "stock": 20,
         }
-        
-        response = api_client.post('/api/products/', data, format='json')
-        
+
+        response = api_client.post("/api/products/", data, format="json")
+
         assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert 'price' in response.data
-    
+        assert "price" in response.data
+
     def test_create_product_with_duplicate_barcode(self, api_client, sample_products):
         """
         Test creating a product with duplicate barcode.
         """
         data = {
-            'barcode': '123456789',  # Ya existe
-            'name': 'Duplicate Product',
-            'price': '10.00',
-            'cost': '6.00',
-            'stock': 20,
+            "barcode": "123456789",  # Ya existe
+            "name": "Duplicate Product",
+            "price": "10.00",
+            "cost": "6.00",
+            "stock": 20,
         }
-        
-        response = api_client.post('/api/products/', data, format='json')
-        
+
+        response = api_client.post("/api/products/", data, format="json")
+
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 
@@ -301,38 +302,38 @@ class TestProductUpdateAPI:
     """
     Tests for PUT/PATCH /api/products/{id}/ endpoint.
     """
-    
+
     def test_update_product(self, api_client, sample_products):
         """
         Test updating a product.
         """
         product = sample_products[0]
         data = {
-            'name': 'Updated Name',
-            'price': '3.00',
+            "name": "Updated Name",
+            "price": "3.00",
         }
-        
-        response = api_client.patch(f'/api/products/{product.id}/', data, format='json')
-        
+
+        response = api_client.patch(f"/api/products/{product.id}/", data, format="json")
+
         assert response.status_code == status.HTTP_200_OK
-        assert response.data['name'] == 'Updated Name'
-        assert Decimal(response.data['price']) == Decimal('3.00')
-        
+        assert response.data["name"] == "Updated Name"
+        assert Decimal(response.data["price"]) == Decimal("3.00")
+
         # Verificar en la base de datos
         product.refresh_from_db()
-        assert product.name == 'Updated Name'
-    
+        assert product.name == "Updated Name"
+
     def test_update_product_invalid_price(self, api_client, sample_products):
         """
         Test updating product with invalid price (lower than cost).
         """
         product = sample_products[0]
         data = {
-            'price': '1.00',  # cost es 1.50
+            "price": "1.00",  # cost es 1.50
         }
-        
-        response = api_client.patch(f'/api/products/{product.id}/', data, format='json')
-        
+
+        response = api_client.patch(f"/api/products/{product.id}/", data, format="json")
+
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 
@@ -341,16 +342,15 @@ class TestProductDeleteAPI:
     """
     Tests for DELETE /api/products/{id}/ endpoint.
     """
-    
+
     def test_delete_product(self, api_client, sample_products):
         """
         Test deleting a product.
         """
         product = sample_products[0]
         product_id = product.id
-        
-        response = api_client.delete(f'/api/products/{product_id}/')
-        
+
+        response = api_client.delete(f"/api/products/{product_id}/")
+
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert not Product.objects.filter(id=product_id).exists()
-

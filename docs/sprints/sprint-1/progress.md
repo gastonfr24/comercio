@@ -6,9 +6,9 @@
 
 ## 📊 Estado General
 
-**Progreso:** 1/27 tareas completadas (3.7%)  
-**Story Points:** 0.5/30 completados (1.7%)  
-**Tiempo estimado restante:** 71 horas
+**Progreso:** 2/27 tareas completadas (7.4%)  
+**Story Points:** 1/30 completados (3.3%)  
+**Tiempo estimado restante:** 69 horas
 
 ---
 
@@ -24,11 +24,18 @@
 - ✅ Inicializado repositorio Git con Git Flow
 - ✅ Configurado GitHub repo: gastonfr24/comercio
 - ✅ Configurado docker-compose con .env files
+- ✅ Plantilla profesional de Pull Request creada
 - ✅ **T-001: Product model completado**
   - Modelo con validaciones y métodos de stock
   - 16 tests unitarios pasando (100%)
   - Migraciones creadas y aplicadas
   - Django admin configurado
+  - PR #1 creado y mergeado a dev
+- ✅ **T-002: Products list API completado**
+  - ProductViewSet con CRUD completo
+  - Filtros, búsqueda y paginación
+  - 17 tests de API pasando (100%)
+  - django-filter integrado
 
 **En Progreso:**
 
@@ -40,10 +47,11 @@
 
 **Notas:**
 
-- Sprint iniciado exitosamente con reglas de Git Flow
-- Backend funcionando en Docker con django-environ
-- Frontend configurado con Dockerfile.dev
-- Próximo: T-002 - Products list API
+- 2 tareas completadas en el primer día
+- Sistema de PR implementado correctamente
+- Backend 100% funcional con API REST
+- Superuser creado para desarrollo (admin/admin123)
+- Próximo: T-003 - Product search API
 
 ---
 
@@ -58,6 +66,15 @@
   - Migraciones creadas y aplicadas
   - Django admin configurado
   - Configuración de .env mejorada
+
+- [x] **T-002:** Products list API - Completado 25/11/2025
+  - ProductSerializer y ProductListSerializer
+  - ProductViewSet con CRUD completo
+  - Filtros por category e is_active
+  - Búsqueda por name y barcode
+  - Paginación customizable
+  - 17 tests de API (100% passing)
+  - django-filter integrado
 
 ---
 
