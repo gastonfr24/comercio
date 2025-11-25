@@ -1,30 +1,38 @@
 # Sprint 1 - Progress Tracking
 
-**Última actualización:** 27/01/2025
+**Última actualización:** 25/11/2025
 
 ---
 
 ## 📊 Estado General
 
-**Progreso:** 0/27 tareas completadas (0%)  
-**Story Points:** 0/30 completados (0%)  
-**Tiempo estimado restante:** 75 horas
+**Progreso:** 1/27 tareas completadas (3.7%)  
+**Story Points:** 0.5/30 completados (1.7%)  
+**Tiempo estimado restante:** 71 horas
 
 ---
 
 ## 📅 Daily Progress
 
-### Lunes 27/01/2025 - Día 1
+### Lunes 25/11/2025 - Día 1
 
 **Completado:**
 
 - ✅ Sprint Planning Meeting
 - ✅ Documentación de Sprint 1 creada
 - ✅ User stories descompuestas en tareas
+- ✅ Inicializado repositorio Git con Git Flow
+- ✅ Configurado GitHub repo: gastonfr24/comercio
+- ✅ Configurado docker-compose con .env files
+- ✅ **T-001: Product model completado**
+  - Modelo con validaciones y métodos de stock
+  - 16 tests unitarios pasando (100%)
+  - Migraciones creadas y aplicadas
+  - Django admin configurado
 
 **En Progreso:**
 
-- 🟡 T-001: Product model (próxima tarea)
+- Ninguna
 
 **Blockers:**
 
@@ -32,21 +40,30 @@
 
 **Notas:**
 
-- Sprint planificado y listo para comenzar
-- 27 tareas técnicas identificadas
-- Próximo: Inicializar repositorio Git y empezar T-001
+- Sprint iniciado exitosamente con reglas de Git Flow
+- Backend funcionando en Docker con django-environ
+- Frontend configurado con Dockerfile.dev
+- Próximo: T-002 - Products list API
 
 ---
 
 ## ✅ Tareas Completadas
 
-_Ninguna aún_
+- [x] **T-001:** Product model - Completado 25/11/2025
+  - App products creada
+  - Modelo Product con validaciones completas
+  - Métodos increase_stock() y decrease_stock()
+  - Propiedad profit_margin calculada
+  - 16 tests unitarios (100% passing)
+  - Migraciones creadas y aplicadas
+  - Django admin configurado
+  - Configuración de .env mejorada
 
 ---
 
 ## 🟡 Tareas En Progreso
 
-_Ninguna aún_
+_Ninguna_
 
 ---
 

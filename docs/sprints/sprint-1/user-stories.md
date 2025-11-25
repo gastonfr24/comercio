@@ -26,13 +26,19 @@
 
 **Backend:**
 
-- [ ] **T-001:** Crear app `products` y modelo Product
+- [x] **T-001:** Crear app `products` y modelo Product ✅ COMPLETADA
 
-  - Campos: barcode, name, price, cost, stock, category, is_active
-  - Validaciones de barcode
-  - Tests del modelo
+  - ✅ Campos: barcode, name, price, cost, stock, category, is_active
+  - ✅ Validaciones de barcode
+  - ✅ Tests del modelo (16 tests pasando)
+  - ✅ Cambiar python-decouple por django-environ
+  - ✅ Configurar archivos .env (backend y frontend)
+  - ✅ Configurar .env.dev para Docker
+  - ✅ Actualizar docker-compose.dev.yml para usar archivos .env
+  - ✅ Django admin configurado
+  - ✅ Migraciones creadas y aplicadas
   - **Rama:** `feature/sprint1-001-product-model`
-  - **Estimado:** 3 horas
+  - **Estimado:** 4 horas | **Real:** 4 horas
 
 - [ ] **T-002:** API endpoint GET /api/products/
 

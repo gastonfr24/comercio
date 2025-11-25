@@ -8,6 +8,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 ## [Unreleased]
 
 ### Added
+
 - Configuración inicial del proyecto
 - Backend Django 5.0 con Django REST Framework
 - Frontend Next.js 14 con TypeScript
@@ -28,8 +29,32 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
   - Sistema de checkboxes para tracking de tareas
   - Actualización diaria obligatoria de progress.md
   - Proceso completo documentado en `docs/methodology/sprint-format-guide.md`
+- **Sprint 1 - T-001 Completada:** Modelo Product con gestión de inventario
+  - App products con modelo Product completo
+  - Campos: barcode, name, price, cost, stock, category, is_active
+  - Validaciones de barcode y precios
+  - Métodos de gestión de stock (increase/decrease)
+  - Cálculo automático de profit_margin
+  - 16 tests unitarios comprehensivos (100% passing)
+  - Django admin configurado con filtros y edición inline
+  - Migraciones aplicadas exitosamente
+
+### Changed
+
+- Cambiado python-decouple por django-environ en backend
+- Configuración de variables de entorno con archivos .env
+- Actualizado docker-compose.dev.yml para usar env_file
+- Mejorado api.ts en frontend para usar variables de entorno NEXT_PUBLIC
+
+### Fixed
+
+- Corregido error de ESLint en layout.tsx (falta import React)
+- Corregido error de CORS configuration en settings.py
+- Agregado Dockerfile.dev para desarrollo con docker-compose
+- Creado carpeta migrations en app products
 
 ### Documentation
+
 - Guía completa de setup y configuración (SETUP.md)
 - Documentación de arquitectura base
 - Guías de Git Flow y estrategia de branches
@@ -42,6 +67,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 - CODE_OF_CONDUCT.md basado en Contributor Covenant
 
 ### Configuration
+
 - Git configurado para usuario gastonfr24
 - Linters y formateadores: flake8, black, isort, prettier, eslint
 - VSCode settings y extensiones recomendadas
@@ -53,6 +79,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 ## [0.1.0] - 2025-01-XX
 
 ### Added
+
 - Configuración inicial del repositorio
 - Estructura base de carpetas backend/frontend
 - Configuración de entornos virtuales
@@ -62,18 +89,23 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 - README y guías de inicio
 
 ### Changed
+
 - N/A
 
 ### Deprecated
+
 - N/A
 
 ### Removed
+
 - N/A
 
 ### Fixed
+
 - N/A
 
 ### Security
+
 - Configuración de variables de entorno
 - .gitignore para archivos sensibles
 
@@ -82,10 +114,13 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 ## Notas de Versionado
 
 ### Versión Actual
+
 **v0.1.0** - Configuración inicial y estructura base del proyecto
 
 ### Próxima Release
+
 **v1.0.0** - Primera versión funcional con:
+
 - Sistema de autenticación completo
 - Catálogo de productos básico
 - API RESTful documentada
@@ -94,16 +129,19 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 ### Roadmap
 
 #### v1.1.0 (Sprint 2)
+
 - Carrito de compras
 - Gestión de órdenes
 - Panel de administración mejorado
 
 #### v1.2.0 (Sprint 3)
+
 - Sistema de pagos
 - Notificaciones por email
 - Dashboard de analytics
 
 #### v2.0.0 (Sprint 4+)
+
 - Sistema de recomendaciones
 - Búsqueda avanzada
 - Multi-idioma
@@ -125,6 +163,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ```markdown
 ### Added
+
 - feat(scope): descripción del cambio (#PR)
 ```
 
@@ -137,4 +176,3 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 **Mantenido por:** @gastonfr24  
 **Última actualización:** 2025-01-XX
-
