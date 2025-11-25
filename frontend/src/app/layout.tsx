@@ -1,3 +1,4 @@
+import React from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
@@ -5,15 +6,15 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Comercio - Plataforma de E-commerce',
-  description: 'Plataforma moderna de comercio electrónico',
+  title: 'Comercio - Sistema de Kiosco',
+  description: 'Sistema de punto de venta para kioscos',
 }
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
     <html lang="es">
       <body className={inter.className}>{children}</body>
