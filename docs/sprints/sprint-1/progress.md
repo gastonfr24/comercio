@@ -6,9 +6,9 @@
 
 ## 📊 Estado General
 
-**Progreso:** 1/27 tareas completadas (3.7%)  
-**Story Points:** 0.5/30 completados (1.7%)  
-**Tiempo estimado restante:** 71 horas
+**Progreso:** 3/27 tareas completadas (11.1%)  
+**Story Points:** 1.5/30 completados (5%)  
+**Tiempo estimado restante:** 65.5 horas
 
 ---
 
@@ -29,6 +29,16 @@
   - 16 tests unitarios pasando (100%)
   - Migraciones creadas y aplicadas
   - Django admin configurado
+- ✅ **T-002: Products list API completado**
+  - ProductViewSet con CRUD completo
+  - Filtros, búsqueda y paginación
+  - 17 tests de API pasando (100%)
+  - django-filter integrado
+- ✅ **T-004: Sale models completado**
+  - Sale y SaleItem models
+  - Gestión de stock automática
+  - 24 tests pasando (100%)
+  - Django admin configurado
 
 **En Progreso:**
 
@@ -40,10 +50,11 @@
 
 **Notas:**
 
-- Sprint iniciado exitosamente con reglas de Git Flow
-- Backend funcionando en Docker con django-environ
-- Frontend configurado con Dockerfile.dev
-- Próximo: T-002 - Products list API
+- 3 tareas completadas en el primer día (excelente ritmo!)
+- Backend 100% funcional: productos y ventas
+- Superuser creado para desarrollo (admin/admin123)
+- Sistema de PR implementado correctamente
+- Próximo: T-005 - Create sale API
 
 ---
 
@@ -58,6 +69,25 @@
   - Migraciones creadas y aplicadas
   - Django admin configurado
   - Configuración de .env mejorada
+
+- [x] **T-002:** Products list API - Completado 25/11/2025
+  - ProductSerializer y ProductListSerializer
+  - ProductViewSet con CRUD completo
+  - Filtros por category e is_active
+  - Búsqueda por name y barcode
+  - Paginación customizable
+  - 17 tests de API (100% passing)
+  - django-filter integrado
+
+- [x] **T-004:** Sale models - Completado 25/11/2025
+  - App sales creada
+  - Sale model con payment_type, status, total
+  - SaleItem model con relaciones FK
+  - Métodos de negocio: complete_sale(), cancel_sale()
+  - Gestión automática de stock
+  - Validaciones completas
+  - 24 tests comprehensivos (100% passing)
+  - Django admin con inline editing
 
 ---
 
