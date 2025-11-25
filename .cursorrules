@@ -664,55 +664,139 @@ Seguir [Semantic Versioning 2.0.0](https://semver.org/lang/es/):
 
 ## 🚀 PULL REQUEST (PROCESO OBLIGATORIO)
 
+### Regla Fundamental
+
+**NUNCA hacer merge directo de branches. TODO merge debe hacerse vía Pull Request.**
+
+- ❌ **Prohibido:** `git merge feature/... --no-ff` directo
+- ✅ **Correcto:** Crear Pull Request en GitHub y mergear desde allí
+
 ### Template de PR
 
-```markdown
-## 📋 Descripción
+**Ubicación:** `.github/pull_request_template.md`
 
-[Descripción clara y concisa de los cambios]
+Esta plantilla se auto-completa al crear un PR en GitHub. Incluye:
 
-## 🔗 Issue Relacionado
+- Descripción detallada
+- Referencia a Tarea (T-XXX) y User Story (US-XXX)
+- Tipo de cambio
+- Checklist completa (código, tests, documentación, DB, seguridad)
+- Evidencia de testing
+- Screenshots (si aplica)
+- Impacto en el sprint
 
-Closes #[número]
+**Ver archivo `.github/pull_request_template.md` para la plantilla completa.**
 
-## 🎯 Tipo de Cambio
+### Título del PR - Formato OBLIGATORIO
 
-- [ ] 🐛 Bug fix (non-breaking change)
-- [ ] ✨ Nueva feature (non-breaking change)
-- [ ] 💥 Breaking change (fix o feature que causa que funcionalidad existente no funcione)
-- [ ] 📝 Documentación
-- [ ] 🎨 Estilo/formato
-
-## ✅ Checklist
-
-- [ ] Mi código sigue las reglas de estilo del proyecto
-- [ ] He realizado una auto-revisión de mi código
-- [ ] He comentado mi código, especialmente en áreas difíciles
-- [ ] He actualizado la documentación correspondiente
-- [ ] Mis cambios no generan nuevos warnings
-- [ ] He agregado tests que prueban que mi fix es efectivo o que mi feature funciona
-- [ ] Tests unitarios nuevos y existentes pasan localmente
-- [ ] He actualizado el CHANGELOG.md
-
-## 📸 Screenshots (si aplica)
-
-## 🧪 Testing
-
-[Describe las pruebas que realizaste]
-
-## 📝 Notas Adicionales
-
-[Cualquier información adicional]
+```
+[T-XXX] <tipo>(<scope>): <descripción corta>
 ```
 
-### Proceso de Revisión
+**Ejemplos:**
+```
+[T-001] feat(products): add Product model with inventory management
+[T-002] feat(api): add products list endpoint with filters
+[T-006] feat(ui): add ScannerInput component for POS
+```
 
-1. **Crear PR** hacia `dev` (nunca directo a `main`)
-2. **Asignar reviewers** (mínimo 1)
-3. **Esperar aprobación** antes de merge
-4. **Resolver conflictos** si existen
-5. **Squash and merge** para mantener historial limpio
-6. **Eliminar rama** después del merge
+### Descripción del PR - Contenido Mínimo
+
+1. **Resumen ejecutivo:** ¿Qué se hizo y por qué?
+2. **Cambios técnicos:** Lista de cambios concretos (backend, frontend, docs, config)
+3. **Evidencia de testing:** Tests pasando, screenshots, pasos para probar
+4. **Checklist completo:** Todos los items verificados
+5. **Referencia a tarea:** T-XXX y US-XXX
+
+### Proceso de Revisión COMPLETO
+
+#### 1. **Antes de crear el PR**
+
+- [ ] Todos los tests pasan localmente
+- [ ] CHANGELOG.md actualizado
+- [ ] `docs/sprints/sprint-N/user-stories.md` checkbox marcado `[x]`
+- [ ] `docs/sprints/sprint-N/progress.md` actualizado
+- [ ] `docs/` actualizado según tipo de cambio
+- [ ] Commit de documentación realizado
+- [ ] Branch pusheado a origin
+
+#### 2. **Crear el PR**
+
+```bash
+# Usando GitHub CLI (recomendado)
+gh pr create \
+  --base dev \
+  --head feature/sprint1-XXX-descripcion \
+  --title "[T-XXX] tipo(scope): descripción" \
+  --body "$(cat .github/pull_request_template.md)"
+
+# O crear manualmente en GitHub UI
+```
+
+**Importante:**
+- Base branch: SIEMPRE `dev` (nunca `main`)
+- Labels apropiados: `feature`, `bugfix`, `hotfix`, `sprint-1`, etc.
+- Assignee: asignarte a ti mismo
+- Reviewers: asignar al menos 1 reviewer (si es proyecto personal, puedes auto-aprobar)
+
+#### 3. **Durante la revisión**
+
+- [ ] Responder a comentarios del reviewer
+- [ ] Hacer cambios solicitados en nuevos commits
+- [ ] Pushear cambios adicionales
+- [ ] Re-solicitar revisión si es necesario
+
+#### 4. **Antes del merge**
+
+- [ ] Aprobación recibida (mínimo 1 reviewer)
+- [ ] Todos los checks de CI pasando (si aplica)
+- [ ] Conflictos resueltos
+- [ ] Branch actualizado con dev si es necesario
+
+#### 5. **Mergear el PR**
+
+**Estrategia de merge:**
+
+- **Para features:** `Squash and merge` (mantiene historial limpio)
+- **Para hotfix:** `Merge commit` (preserva historial completo)
+- **Para release:** `Merge commit` (preserva todo el trabajo)
+
+**Después del merge:**
+
+```bash
+# Actualizar dev local
+git checkout dev
+git pull origin dev
+
+# Eliminar rama local
+git branch -d feature/sprint1-XXX-descripcion
+
+# Eliminar rama remota (opcional, GitHub lo hace automático)
+git push origin --delete feature/sprint1-XXX-descripcion
+```
+
+### Instrucciones para Cursor AI
+
+**Al completar una tarea:**
+
+1. Verificar que todos los checkboxes de la tarea estén completos
+2. Pushear la rama: `git push origin feature/sprint1-XXX-...`
+3. **Crear PR usando `gh pr create`** con toda la información
+4. Sugerir al usuario que revise el PR en GitHub
+5. **NO hacer merge directo**, esperar a que el usuario apruebe el PR
+
+**NUNCA:**
+- ❌ Hacer `git merge` directo sin PR
+- ❌ Mergear a `main` sin pasar por `dev`
+- ❌ Crear PR sin completar checklist
+- ❌ Crear PR sin actualizar documentación
+
+**SIEMPRE:**
+- ✅ Crear PR para TODO merge
+- ✅ Base branch: `dev`
+- ✅ Título con formato: `[T-XXX] tipo(scope): descripción`
+- ✅ Completar toda la plantilla del PR
+- ✅ Referenciar tarea y user story
 
 ---
 
