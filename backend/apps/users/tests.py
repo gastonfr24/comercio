@@ -10,6 +10,9 @@ from .permissions import IsAdmin, IsCashier, IsAdminOrCashier, IsAdminOrReadOnly
 
 User = get_user_model()
 
+# Test password constant (not a real secret, only for testing)
+TEST_PASSWORD = "test_password_for_unit_tests_only"
+
 
 @pytest.mark.django_db
 class TestUserModel:
@@ -22,7 +25,7 @@ class TestUserModel:
         Test creating user with default role (CASHIER).
         """
         user = User.objects.create_user(
-            username="testuser", email="test@example.com", password="testpass123"
+            username="testuser", email="test@example.com", password=TEST_PASSWORD
         )
 
         assert user.username == "testuser"
@@ -38,7 +41,7 @@ class TestUserModel:
         user = User.objects.create_user(
             username="admin",
             email="admin@example.com",
-            password="adminpass123",
+            password=TEST_PASSWORD,
             role=User.Role.ADMIN,
         )
 
@@ -51,7 +54,7 @@ class TestUserModel:
         Test string representation of User.
         """
         user = User.objects.create_user(
-            username="testuser", role=User.Role.CASHIER, password="pass123"
+            username="testuser", role=User.Role.CASHIER, password=TEST_PASSWORD
         )
 
         assert str(user) == "testuser (Cashier)"
@@ -61,7 +64,7 @@ class TestUserModel:
         Test string representation of admin user.
         """
         user = User.objects.create_user(
-            username="admin", role=User.Role.ADMIN, password="pass123"
+            username="admin", role=User.Role.ADMIN, password=TEST_PASSWORD
         )
 
         assert str(user) == "admin (Administrator)"
@@ -71,10 +74,10 @@ class TestUserModel:
         Test has_admin_permissions method.
         """
         admin = User.objects.create_user(
-            username="admin", role=User.Role.ADMIN, password="pass123"
+            username="admin", role=User.Role.ADMIN, password=TEST_PASSWORD
         )
         cashier = User.objects.create_user(
-            username="cashier", role=User.Role.CASHIER, password="pass123"
+            username="cashier", role=User.Role.CASHIER, password=TEST_PASSWORD
         )
 
         assert admin.has_admin_permissions() is True
@@ -87,7 +90,7 @@ class TestUserModel:
         superuser = User.objects.create_superuser(
             username="super",
             email="super@example.com",
-            password="superpass123",
+            password=TEST_PASSWORD,
             role=User.Role.CASHIER,
         )
 
@@ -98,10 +101,10 @@ class TestUserModel:
         Test can_manage_products permission.
         """
         admin = User.objects.create_user(
-            username="admin", role=User.Role.ADMIN, password="pass123"
+            username="admin", role=User.Role.ADMIN, password=TEST_PASSWORD
         )
         cashier = User.objects.create_user(
-            username="cashier", role=User.Role.CASHIER, password="pass123"
+            username="cashier", role=User.Role.CASHIER, password=TEST_PASSWORD
         )
 
         assert admin.can_manage_products() is True
@@ -112,10 +115,10 @@ class TestUserModel:
         Test can_manage_users permission.
         """
         admin = User.objects.create_user(
-            username="admin", role=User.Role.ADMIN, password="pass123"
+            username="admin", role=User.Role.ADMIN, password=TEST_PASSWORD
         )
         cashier = User.objects.create_user(
-            username="cashier", role=User.Role.CASHIER, password="pass123"
+            username="cashier", role=User.Role.CASHIER, password=TEST_PASSWORD
         )
 
         assert admin.can_manage_users() is True
@@ -126,10 +129,10 @@ class TestUserModel:
         Test can_view_reports permission.
         """
         admin = User.objects.create_user(
-            username="admin", role=User.Role.ADMIN, password="pass123"
+            username="admin", role=User.Role.ADMIN, password=TEST_PASSWORD
         )
         cashier = User.objects.create_user(
-            username="cashier", role=User.Role.CASHIER, password="pass123"
+            username="cashier", role=User.Role.CASHIER, password=TEST_PASSWORD
         )
 
         assert admin.can_view_reports() is True
@@ -140,13 +143,13 @@ class TestUserModel:
         Test can_manage_cash_register permission.
         """
         admin = User.objects.create_user(
-            username="admin", role=User.Role.ADMIN, password="pass123"
+            username="admin", role=User.Role.ADMIN, password=TEST_PASSWORD
         )
         cashier = User.objects.create_user(
-            username="cashier", role=User.Role.CASHIER, password="pass123"
+            username="cashier", role=User.Role.CASHIER, password=TEST_PASSWORD
         )
         inactive = User.objects.create_user(
-            username="inactive", role=User.Role.CASHIER, password="pass123", is_active=False
+            username="inactive", role=User.Role.CASHIER, password=TEST_PASSWORD, is_active=False
         )
 
         assert admin.can_manage_cash_register() is True
@@ -158,13 +161,13 @@ class TestUserModel:
         Test can_make_sales permission.
         """
         admin = User.objects.create_user(
-            username="admin", role=User.Role.ADMIN, password="pass123"
+            username="admin", role=User.Role.ADMIN, password=TEST_PASSWORD
         )
         cashier = User.objects.create_user(
-            username="cashier", role=User.Role.CASHIER, password="pass123"
+            username="cashier", role=User.Role.CASHIER, password=TEST_PASSWORD
         )
         inactive = User.objects.create_user(
-            username="inactive", role=User.Role.CASHIER, password="pass123", is_active=False
+            username="inactive", role=User.Role.CASHIER, password=TEST_PASSWORD, is_active=False
         )
 
         assert admin.can_make_sales() is True
@@ -178,7 +181,7 @@ class TestUserModel:
         user = User.objects.create_user(
             username="testuser",
             email="test@example.com",
-            password="pass123",
+            password=TEST_PASSWORD,
             phone="+1234567890",
         )
 
@@ -199,10 +202,10 @@ class TestPermissions:
         self.view = APIView()
 
         self.admin = User.objects.create_user(
-            username="admin", role=User.Role.ADMIN, password="pass123"
+            username="admin", role=User.Role.ADMIN, password=TEST_PASSWORD
         )
         self.cashier = User.objects.create_user(
-            username="cashier", role=User.Role.CASHIER, password="pass123"
+            username="cashier", role=User.Role.CASHIER, password=TEST_PASSWORD
         )
 
     def test_is_admin_permission_allows_admin(self):
