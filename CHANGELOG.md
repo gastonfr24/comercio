@@ -68,6 +68,16 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
   - Búsqueda por producto
   - 14 tests de API (100% passing)
   - Endpoints: GET /api/sales/, POST, GET /api/sales/{id}/, POST /api/sales/{id}/cancel/
+- **Sprint 1 - T-006 Completada:** Componente ScannerInput para POS
+  - Componente React con TypeScript
+  - Input con autofocus para escaneo rápido
+  - Detección de tecla Enter para búsqueda
+  - Loading states y feedback visual
+  - Error handling con mensajes claros
+  - Integración con shadcn/ui (Input, Button)
+  - Accesibilidad (ARIA labels)
+  - Página de prueba /pos creada
+  - Lint sin errores
 
 ### Changed
 

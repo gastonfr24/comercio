@@ -6,9 +6,9 @@
 
 ## 📊 Estado General
 
-**Progreso:** 4/27 tareas completadas (14.8%)  
-**Story Points:** 2/30 completados (6.7%)  
-**Tiempo estimado restante:** 62 horas
+**Progreso:** 5/27 tareas completadas (18.5%)  
+**Story Points:** 2.5/30 completados (8.3%)  
+**Tiempo estimado restante:** 60 horas
 
 ---
 
@@ -47,6 +47,12 @@
   - SaleViewSet con CRUD completo
   - 14 tests de API pasando (100%)
   - Endpoints: POST /api/sales/, GET, cancel
+- ✅ **T-006: ScannerInput component completado**
+  - Componente React con TypeScript
+  - Input con autofocus y Enter key
+  - Loading y error states
+  - shadcn/ui integration
+  - Página /pos de prueba
 
 **En Progreso:**
 
