@@ -230,12 +230,24 @@
   - **Estimado:** 1 hora
 
 - [ ] **T-017:** Endpoint POST /api/sales/confirm/
+
   - Confirmar venta
   - Actualizar stock
   - Registrar en caja
   - Tests
   - **Rama:** `feature/sprint1-017-confirm-sale-api`
   - **Estimado:** 3 horas
+
+- [ ] **T-017b:** Integración de MercadoPago
+  - Instalar mercadopago SDK
+  - Crear preference de pago
+  - Webhook para notificaciones
+  - Endpoint POST /api/payments/mercadopago/create/
+  - Endpoint POST /api/payments/mercadopago/webhook/
+  - Verificación de pagos
+  - Tests de integración
+  - **Rama:** `feature/sprint1-017b-mercadopago-integration`
+  - **Estimado:** 5 horas
 
 **Frontend:**
 
