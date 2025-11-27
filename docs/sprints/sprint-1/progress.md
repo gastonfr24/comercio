@@ -6,9 +6,9 @@
 
 ## 📊 Estado General
 
-**Progreso:** 7/27 tareas completadas (25.9%)  
-**Story Points:** 3.5/30 completados (11.7%)  
-**Tiempo estimado restante:** 54 horas
+**Progreso:** 8/27 tareas completadas (29.6%)  
+**Story Points:** 4.5/30 completados (15%)  
+**Tiempo estimado restante:** 50 horas
 
 ---
 
@@ -64,6 +64,12 @@
   - Cards de productos
   - Integración con API
   - Estados: loading, empty, error
+- ✅ **T-008: useCart hook completado**
+  - Custom hook para carrito
+  - Add, remove, update quantity
+  - Totales automáticos
+  - localStorage persistence
+  - Integrado en /pos
 
 **En Progreso:**
 

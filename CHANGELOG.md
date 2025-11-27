@@ -98,6 +98,18 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
   - Stock indicator visual
   - Skeleton loading para UX
   - Página /pos actualizada con búsqueda real
+- **Sprint 1 - T-008 Completada:** Hook useCart para gestión del carrito
+  - Custom React hook con TypeScript
+  - Agregar items al carrito (addItem)
+  - Remover items (removeItem)
+  - Actualizar cantidades (updateQuantity)
+  - Incrementar/Decrementar (incrementItem/decrementItem)
+  - Limpiar carrito (clearCart)
+  - Cálculo automático de totales
+  - Persistencia en localStorage
+  - Helpers: isInCart, getItemQuantity
+  - Integrado en página /pos
+  - Badge de resumen en header
 
 ### Changed
 

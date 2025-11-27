@@ -5,6 +5,8 @@ import { ScannerInput } from "@/components/ScannerInput";
 import { ProductList, Product } from "@/components/ProductList";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { searchProducts } from "@/lib/api";
+import { useCart } from "@/hooks/useCart";
+import { Badge } from "@/components/ui/badge";
 
 /**
  * POS page for point of sale operations.
@@ -14,6 +16,9 @@ export default function POSPage() {
   const [error, setError] = useState<string | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
+
+  // Cart state
+  const cart = useCart();
 
   /**
    * Handle search submission.
@@ -51,21 +56,50 @@ export default function POSPage() {
 
   /**
    * Handle add to cart.
-   * TODO: Implement cart functionality in T-008.
+   * Adds product to cart using useCart hook.
    */
   const handleAddToCart = (product: Product) => {
-    // eslint-disable-next-line no-console
-    console.log("Adding to cart:", product);
-    // TODO: Implement with useCart hook
+    cart.addItem({
+      id: product.id,
+      barcode: product.barcode,
+      name: product.name,
+      price: product.price,
+    });
+  };
+
+  /**
+   * Format price to currency.
+   */
+  const formatPrice = (price: number): string => {
+    return new Intl.NumberFormat("es-AR", {
+      style: "currency",
+      currency: "ARS",
+    }).format(price);
   };
 
   return (
     <div className="container mx-auto p-4 md:p-6 max-w-7xl">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">Punto de Venta</h1>
-        <p className="text-muted-foreground">
-          Escanea o busca productos para agregarlos al carrito
-        </p>
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Punto de Venta</h1>
+          <p className="text-muted-foreground">
+            Escanea o busca productos para agregarlos al carrito
+          </p>
+        </div>
+
+        {/* Cart Summary Badge */}
+        {cart.totals.itemCount > 0 && (
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <Badge variant="secondary" className="text-lg px-4 py-2">
+                {cart.totals.itemCount} {cart.totals.itemCount === 1 ? "item" : "items"}
+              </Badge>
+              <p className="text-2xl font-bold mt-2">
+                {formatPrice(cart.totals.subtotal)}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="space-y-6">
