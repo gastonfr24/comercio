@@ -74,14 +74,15 @@
   - **Rama:** `feature/sprint1-004-sale-models`
   - **Estimado:** 4 horas | **Real:** 3.5 horas
 
-- [ ] **T-005:** API endpoint POST /api/sales/
-  - Crear venta con items
-  - Validar stock disponible
-  - Descontar stock automáticamente
-  - Calcular totales
-  - Tests de creación
-  - **Rama:** `feature/sprint1-005-create-sale-api`
-  - **Estimado:** 5 horas
+- [x] **T-005:** API endpoint POST /api/sales/ ✅ COMPLETADA
+  - ✅ Crear venta con items
+  - ✅ Validar stock disponible
+  - ✅ Descontar stock automáticamente
+  - ✅ Calcular totales
+  - ✅ Cancelación de ventas con restauración de stock
+  - ✅ Tests de creación (14 tests de API pasando)
+  - **Rama:** `feature/sprint1-004-sale-models` (incluida en PR #4)
+  - **Estimado:** 5 horas | **Real:** 3 horas
 
 **Frontend:**
 
