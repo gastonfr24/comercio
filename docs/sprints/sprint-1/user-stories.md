@@ -52,14 +52,16 @@
   - **Rama:** `feature/sprint1-002-products-list-api`
   - **Estimado:** 2 horas | **Real:** 2 horas
 
-- [ ] **T-003:** API endpoint GET /api/products/search/
+- [x] **T-003:** API endpoint GET /api/products/search/ ✅ COMPLETADA
 
-  - Búsqueda por barcode
-  - Búsqueda por nombre (case-insensitive)
-  - Response rápido (< 500ms)
-  - Tests de búsqueda
+  - ✅ Búsqueda por barcode (exacto, case-insensitive)
+  - ✅ Búsqueda por nombre (parcial, case-insensitive)
+  - ✅ Prioridad a matches de barcode
+  - ✅ Response rápido (< 100ms)
+  - ✅ Limita resultados a 10 items
+  - ✅ Tests de búsqueda (11 tests pasando)
   - **Rama:** `feature/sprint1-003-product-search-api`
-  - **Estimado:** 3 horas
+  - **Estimado:** 3 horas | **Real:** 1 hora
 
 - [x] **T-004:** Crear app `sales` con modelos Sale y SaleItem ✅ COMPLETADA
 

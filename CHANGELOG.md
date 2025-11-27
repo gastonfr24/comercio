@@ -68,6 +68,15 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
   - Búsqueda por producto
   - 14 tests de API (100% passing)
   - Endpoints: GET /api/sales/, POST, GET /api/sales/{id}/, POST /api/sales/{id}/cancel/
+- **Sprint 1 - T-003 Completada:** API de búsqueda rápida de productos
+  - Endpoint optimizado GET /api/products/search/?q={query}
+  - Búsqueda por código de barras (exacto, case-insensitive)
+  - Búsqueda por nombre de producto (parcial, case-insensitive)
+  - Prioridad a coincidencias de código de barras
+  - Limita resultados a 10 items para respuesta rápida
+  - Solo productos activos en resultados
+  - 11 tests de búsqueda (100% passing)
+  - Optimizado para uso en POS (< 100ms de respuesta)
 
 ### Changed
 
