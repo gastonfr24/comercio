@@ -426,6 +426,309 @@
 
 ---
 
+---
+
+## US-006: Sistema de autenticación JWT
+
+**Como** usuario del sistema  
+**Quiero** iniciar sesión de forma segura  
+**Para** acceder a las funcionalidades según mi rol
+
+**Story Points:** 13  
+**Prioridad:** 🔴 Alta
+
+### Criterios de Aceptación:
+
+- [ ] Puedo registrarme con usuario y contraseña
+- [ ] Puedo iniciar sesión con credenciales válidas
+- [ ] El sistema usa tokens JWT para autenticación
+- [ ] Los tokens expiran después de un tiempo
+- [ ] Puedo cerrar sesión
+- [ ] Las rutas protegidas requieren autenticación
+- [ ] Hay roles de usuario (admin, cajero)
+- [ ] El sistema recuerda mi sesión (refresh token)
+
+### Tareas Técnicas:
+
+**Backend:**
+
+- [ ] **T-028:** Configurar djangorestframework-simplejwt
+
+  - Instalar dependencia
+  - Configurar settings.py
+  - Crear endpoints de autenticación
+  - Tests de obtención de tokens
+  - **Rama:** `feature/sprint1-028-jwt-setup`
+  - **Estimado:** 3 horas
+
+- [ ] **T-029:** Crear app `users` con roles
+
+  - Modelo User personalizado (extend AbstractUser)
+  - Roles: ADMIN, CASHIER
+  - Permisos por rol
+  - Django admin configurado
+  - Migraciones
+  - Tests
+  - **Rama:** `feature/sprint1-029-user-roles`
+  - **Estimado:** 4 horas
+
+- [ ] **T-030:** API endpoints de autenticación
+  - POST /api/auth/register/
+  - POST /api/auth/login/
+  - POST /api/auth/refresh/
+  - POST /api/auth/logout/
+  - GET /api/auth/me/
+  - Tests completos
+  - **Rama:** `feature/sprint1-030-auth-endpoints`
+  - **Estimado:** 4 horas
+
+**Frontend:**
+
+- [ ] **T-031:** Context de autenticación (AuthContext)
+
+  - React Context API
+  - Estado global de usuario
+  - Funciones: login, logout, checkAuth
+  - localStorage para persistencia
+  - Interceptor de axios para tokens
+  - **Rama:** `feature/sprint1-031-auth-context`
+  - **Estimado:** 3 horas
+
+- [ ] **T-032:** Componente LoginForm
+
+  - Formulario de login
+  - Validaciones
+  - Estados de loading/error
+  - Redirección después de login
+  - Diseño profesional
+  - **Rama:** `feature/sprint1-032-login-form`
+  - **Estimado:** 3 horas
+
+- [ ] **T-033:** Página /login
+
+  - Layout de autenticación
+  - Integrar LoginForm
+  - Diseño atractivo
+  - Responsive
+  - **Rama:** `feature/sprint1-033-login-page`
+  - **Estimado:** 2 horas
+
+- [ ] **T-034:** Componente ProtectedRoute
+  - HOC para rutas protegidas
+  - Verificación de autenticación
+  - Redirección a /login
+  - Verificación de roles
+  - **Rama:** `feature/sprint1-034-protected-route`
+  - **Estimado:** 2 horas
+
+---
+
+## US-007: Dashboard administrativo profesional
+
+**Como** administrador  
+**Quiero** ver un dashboard completo con métricas y acciones  
+**Para** gestionar el negocio de forma eficiente
+
+**Story Points:** 13  
+**Prioridad:** 🟡 Media
+
+### Criterios de Aceptación:
+
+- [ ] Veo métricas clave en cards (ventas hoy, productos, stock bajo)
+- [ ] Veo gráfico de ventas de la semana
+- [ ] Veo productos más vendidos
+- [ ] Tengo accesos rápidos a funcionalidades
+- [ ] El diseño es moderno y profesional
+- [ ] Es responsive
+- [ ] Solo accesible para usuarios con rol ADMIN
+
+### Tareas Técnicas:
+
+**Backend:**
+
+- [ ] **T-035:** Endpoint GET /api/dashboard/stats/
+
+  - Ventas del día/semana/mes
+  - Productos con stock bajo
+  - Top productos vendidos
+  - Totales por método de pago
+  - Tests
+  - **Rama:** `feature/sprint1-035-dashboard-stats-api`
+  - **Estimado:** 4 horas
+
+- [ ] **T-036:** Endpoint GET /api/dashboard/sales-chart/
+  - Ventas de últimos 7/30 días
+  - Agrupado por día
+  - Formato para gráficos
+  - Tests
+  - **Rama:** `feature/sprint1-036-sales-chart-api`
+  - **Estimado:** 3 horas
+
+**Frontend:**
+
+- [ ] **T-037:** Layout profesional con sidebar
+
+  - Sidebar con navegación
+  - Header con usuario/logout
+  - Área de contenido
+  - Responsive (colapsa en mobile)
+  - Iconos lucide-react
+  - **Rama:** `feature/sprint1-037-admin-layout`
+  - **Estimado:** 4 horas
+
+- [ ] **T-038:** Componente StatsCards
+
+  - Cards con métricas
+  - Iconos
+  - Colores diferenciados
+  - Animaciones sutiles
+  - **Rama:** `feature/sprint1-038-stats-cards`
+  - **Estimado:** 3 horas
+
+- [ ] **T-039:** Componente SalesChart
+
+  - Gráfico de líneas/barras
+  - Librería recharts
+  - Responsive
+  - Tooltips
+  - **Rama:** `feature/sprint1-039-sales-chart`
+  - **Estimado:** 4 horas
+
+- [ ] **T-040:** Componente QuickActions
+
+  - Botones de acceso rápido
+  - Nueva venta, productos, reportes, caja
+  - Diseño moderno
+  - **Rama:** `feature/sprint1-040-quick-actions`
+  - **Estimado:** 2 horas
+
+- [ ] **T-041:** Página /dashboard
+  - Integrar todos los componentes
+  - Layout grid responsive
+  - Solo accesible con rol ADMIN
+  - **Rama:** `feature/sprint1-041-dashboard-page`
+  - **Estimado:** 3 horas
+
+---
+
+## US-008: Mejorar interfaz simple del POS
+
+**Como** cajero con poco conocimiento de computadoras  
+**Quiero** una interfaz ultra simple e intuitiva  
+**Para** usar el sistema sin dificultad
+
+**Story Points:** 8  
+**Prioridad:** 🟡 Media
+
+### Criterios de Aceptación:
+
+- [ ] Los botones son grandes y claros
+- [ ] Usa iconos intuitivos
+- [ ] Los colores guían la acción (verde=confirmar, rojo=cancelar)
+- [ ] El texto es grande y legible
+- [ ] El flujo es lineal y obvio
+- [ ] Hay confirmaciones antes de acciones importantes
+- [ ] Muestra mensajes de éxito/error claramente
+- [ ] Se puede usar solo con mouse (sin teclado)
+
+### Tareas Técnicas:
+
+**Frontend:**
+
+- [ ] **T-042:** Rediseñar página POS para simplicidad
+
+  - Botones extra grandes
+  - Colores intuitivos
+  - Flujo guiado
+  - Mensajes claros
+  - **Rama:** `feature/sprint1-042-pos-redesign`
+  - **Estimado:** 4 horas
+
+- [ ] **T-043:** Componente NumericKeyboard
+
+  - Teclado numérico en pantalla
+  - Para ingresar cantidades
+  - Grande y táctil
+  - **Rama:** `feature/sprint1-043-numeric-keyboard`
+  - **Estimado:** 3 horas
+
+- [ ] **T-044:** Mejorar feedback visual
+
+  - Animaciones de success/error
+  - Sonidos (opcional)
+  - Toast notifications grandes
+  - Confirmaciones con modales grandes
+  - **Rama:** `feature/sprint1-044-visual-feedback`
+  - **Estimado:** 3 horas
+
+- [ ] **T-045:** Tutorial interactivo (primera vez)
+  - Guía paso a paso
+  - Overlay con flechas
+  - "Siguiente" para avanzar
+  - Se muestra solo la primera vez
+  - **Rama:** `feature/sprint1-045-pos-tutorial`
+  - **Estimado:** 4 horas
+
+---
+
+## 📊 Resumen de Tareas Actualizado
+
+| Tarea     | Tipo     | US     | Estimado | Estado      |
+| --------- | -------- | ------ | -------- | ----------- |
+| T-001     | Backend  | US-001 | 4h       | ✅ COMPLETADA |
+| T-002     | Backend  | US-001 | 2h       | ✅ COMPLETADA |
+| T-003     | Backend  | US-001 | 1h       | ✅ COMPLETADA |
+| T-004     | Backend  | US-001 | 3.5h     | ✅ COMPLETADA |
+| T-005     | Backend  | US-001 | 3h       | ✅ COMPLETADA |
+| T-006     | Frontend | US-001 | 2h       | ✅ COMPLETADA |
+| T-007     | Frontend | US-001 | 3h       | ✅ COMPLETADA |
+| T-008     | Frontend | US-001 | 4h       | ✅ COMPLETADA |
+| T-009     | Frontend | US-001 | 3h       | ✅ COMPLETADA |
+| T-010     | Frontend | US-001 | 3h       | ⏳ Pendiente |
+| T-011     | Backend  | US-002 | 2h       | ⏳ Pendiente |
+| T-012     | Backend  | US-002 | 2h       | ⏳ Pendiente |
+| T-013     | Frontend | US-002 | 3h       | ⏳ Pendiente |
+| T-014     | Frontend | US-002 | 3h       | ⏳ Pendiente |
+| T-015     | Frontend | US-002 | 2h       | ⏳ Pendiente |
+| T-016     | Backend  | US-003 | 1h       | ⏳ Pendiente |
+| T-017     | Backend  | US-003 | 3h       | ⏳ Pendiente |
+| T-017b    | Backend  | US-003 | 5h       | ⏳ Pendiente |
+| T-018     | Frontend | US-003 | 4h       | ⏳ Pendiente |
+| T-019     | Frontend | US-003 | 2h       | ⏳ Pendiente |
+| T-020     | Backend  | US-004 | 3h       | ⏳ Pendiente |
+| T-021     | Backend  | US-004 | 4h       | ⏳ Pendiente |
+| T-022     | Frontend | US-004 | 2h       | ⏳ Pendiente |
+| T-023     | Frontend | US-004 | 3h       | ⏳ Pendiente |
+| T-024     | Frontend | US-004 | 2h       | ⏳ Pendiente |
+| T-025     | Backend  | US-005 | 3h       | ⏳ Pendiente |
+| T-026     | Frontend | US-005 | 3h       | ⏳ Pendiente |
+| T-027     | Frontend | US-005 | 2h       | ⏳ Pendiente |
+| **T-028** | **Backend**  | **US-006** | **3h**   | **⏳ Pendiente** |
+| **T-029** | **Backend**  | **US-006** | **4h**   | **⏳ Pendiente** |
+| **T-030** | **Backend**  | **US-006** | **4h**   | **⏳ Pendiente** |
+| **T-031** | **Frontend** | **US-006** | **3h**   | **⏳ Pendiente** |
+| **T-032** | **Frontend** | **US-006** | **3h**   | **⏳ Pendiente** |
+| **T-033** | **Frontend** | **US-006** | **2h**   | **⏳ Pendiente** |
+| **T-034** | **Frontend** | **US-006** | **2h**   | **⏳ Pendiente** |
+| **T-035** | **Backend**  | **US-007** | **4h**   | **⏳ Pendiente** |
+| **T-036** | **Backend**  | **US-007** | **3h**   | **⏳ Pendiente** |
+| **T-037** | **Frontend** | **US-007** | **4h**   | **⏳ Pendiente** |
+| **T-038** | **Frontend** | **US-007** | **3h**   | **⏳ Pendiente** |
+| **T-039** | **Frontend** | **US-007** | **4h**   | **⏳ Pendiente** |
+| **T-040** | **Frontend** | **US-007** | **2h**   | **⏳ Pendiente** |
+| **T-041** | **Frontend** | **US-007** | **3h**   | **⏳ Pendiente** |
+| **T-042** | **Frontend** | **US-008** | **4h**   | **⏳ Pendiente** |
+| **T-043** | **Frontend** | **US-008** | **3h**   | **⏳ Pendiente** |
+| **T-044** | **Frontend** | **US-008** | **3h**   | **⏳ Pendiente** |
+| **T-045** | **Frontend** | **US-008** | **4h**   | **⏳ Pendiente** |
+| **TOTAL** | -        | -      | **139h** | -           |
+
+**Estimado Original:** 75 horas  
+**Nuevas Tareas (US-006, US-007, US-008):** 64 horas  
+**Total Sprint Ampliado:** 139 horas  
+
+---
+
 **Creado:** 27/01/2025  
-**Última actualización:** 27/01/2025  
-**Estado:** ✅ Listo para desarrollo
+**Última actualización:** 27/11/2025  
+**Estado:** ✅ Listo para desarrollo (Sprint ampliado con autenticación y dashboard)
