@@ -9,15 +9,18 @@
 
 ## 🎯 Objetivo del Sprint
 
-Crear un sistema funcional mínimo que permita:
+Crear un sistema funcional completo que permita:
 
 - Registrar productos en el sistema
 - Realizar ventas de forma rápida y visual
 - Cobrar en efectivo y tarjeta
 - Abrir y cerrar caja diariamente
 - Ver ventas del día
+- **Autenticación segura con JWT**
+- **Dashboard administrativo profesional**
+- **Interfaz ultra simple para usuarios no técnicos**
 
-**Resultado esperado:** Un kiosco puede operar completamente con este MVP.
+**Resultado esperado:** Un kiosco puede operar completamente con autenticación, roles de usuario y dashboard profesional.
 
 ---
 
@@ -53,14 +56,36 @@ Crear un sistema funcional mínimo que permita:
 - **Prioridad:** 🔴 Alta
 - **Asignado a:** @gastonfr24
 
+### US-006: Sistema de autenticación JWT
+
+- **Story Points:** 13
+- **Prioridad:** 🔴 Alta
+- **Asignado a:** @gastonfr24
+- **Descripción:** Sistema completo de autenticación con roles (admin, cajero)
+
+### US-007: Dashboard administrativo profesional
+
+- **Story Points:** 13
+- **Prioridad:** 🟡 Media
+- **Asignado a:** @gastonfr24
+- **Descripción:** Dashboard con métricas, gráficos y accesos rápidos
+
+### US-008: Mejorar interfaz simple del POS
+
+- **Story Points:** 8
+- **Prioridad:** 🟡 Media
+- **Asignado a:** @gastonfr24
+- **Descripción:** UX optimizada para usuarios sin experiencia en PC
+
 ---
 
 ## 📊 Métricas
 
-- **Total Story Points:** 30
-- **Tareas Totales:** 25 (ver user-stories.md)
+- **Total Story Points:** 64 (30 originales + 34 nuevos)
+- **Tareas Totales:** 45 (ver user-stories.md)
 - **Velocity Anterior:** N/A (primer sprint)
-- **Velocity Objetivo:** 30
+- **Velocity Objetivo (Ajustado):** 64
+- **Horas Estimadas:** 139 horas
 
 ---
 
@@ -122,11 +147,17 @@ apps/
 │   ├── views.py        # SaleViewSet
 │   └── urls.py         # /api/sales/
 │
-└── cash_register/
-    ├── models.py       # CashRegister model
-    ├── serializers.py  # CashRegisterSerializer
-    ├── views.py        # CashRegisterViewSet
-    └── urls.py         # /api/cash-register/
+├── cash_register/
+│   ├── models.py       # CashRegister model
+│   ├── serializers.py  # CashRegisterSerializer
+│   ├── views.py        # CashRegisterViewSet
+│   └── urls.py         # /api/cash-register/
+│
+└── users/              # NUEVO: Autenticación
+    ├── models.py       # Custom User model con roles
+    ├── serializers.py  # UserSerializer, RegisterSerializer
+    ├── views.py        # Auth endpoints
+    └── urls.py         # /api/auth/
 ```
 
 ### Frontend (Sprint 1)
@@ -134,17 +165,41 @@ apps/
 ```
 src/
 ├── app/
-│   ├── pos/           # Página principal de ventas
-│   ├── products/      # Gestión de productos
-│   ├── cash/          # Apertura/cierre de caja
-│   └── reports/       # Reporte de ventas
+│   ├── (public)/      # NUEVO: Rutas públicas
+│   │   └── login/     # Página de login
+│   │
+│   ├── (protected)/   # NUEVO: Rutas protegidas
+│   │   ├── dashboard/ # Dashboard administrativo (admin only)
+│   │   ├── pos/       # Página principal de ventas
+│   │   ├── products/  # Gestión de productos
+│   │   ├── cash/      # Apertura/cierre de caja
+│   │   └── reports/   # Reporte de ventas
+│   │
+│   └── layout.tsx     # Layout global con AuthProvider
 │
 ├── components/
+│   ├── auth/          # NUEVO: Autenticación
+│   │   ├── LoginForm.tsx
+│   │   ├── ProtectedRoute.tsx
+│   │   └── AuthProvider.tsx
+│   │
+│   ├── layout/        # NUEVO: Layouts
+│   │   ├── AdminLayout.tsx      # Sidebar + Header
+│   │   ├── Sidebar.tsx
+│   │   └── Header.tsx
+│   │
+│   ├── dashboard/     # NUEVO: Dashboard
+│   │   ├── StatsCards.tsx
+│   │   ├── SalesChart.tsx
+│   │   ├── QuickActions.tsx
+│   │   └── TopProducts.tsx
+│   │
 │   ├── pos/
 │   │   ├── ScannerInput.tsx
 │   │   ├── ProductList.tsx
 │   │   ├── CartSummary.tsx
-│   │   └── PaymentModal.tsx
+│   │   ├── PaymentModal.tsx
+│   │   └── NumericKeyboard.tsx  # NUEVO: Teclado en pantalla
 │   │
 │   ├── products/
 │   │   ├── ProductForm.tsx
@@ -154,12 +209,18 @@ src/
 │       ├── OpenCashForm.tsx
 │       └── CloseCashForm.tsx
 │
+├── contexts/          # NUEVO: Contexts
+│   └── AuthContext.tsx
+│
 └── lib/
     ├── api/
+    │   ├── auth.ts         # NUEVO: Auth API
+    │   ├── dashboard.ts    # NUEVO: Dashboard API
     │   ├── products.ts
     │   ├── sales.ts
     │   └── cash-register.ts
     └── hooks/
+        ├── useAuth.ts      # NUEVO: Auth hook
         ├── useCart.ts
         └── useCashRegister.ts
 ```
@@ -251,20 +312,36 @@ src/
 
 ### Decisiones Tomadas:
 
-1. **UI/UX:**
+1. **Autenticación:** (NUEVO)
 
-   - Botones grandes (mínimo 48x48px)
-   - Fuente grande (18px+)
+   - JWT con djangorestframework-simplejwt
+   - Roles: ADMIN (gestión completa), CASHIER (solo ventas)
+   - Refresh tokens con rotación
+   - Logout con blacklist de tokens
+
+2. **Dashboard:** (NUEVO)
+
+   - Solo accesible para usuarios ADMIN
+   - Gráficos con recharts library
+   - Métricas en tiempo real
+   - Diseño profesional con sidebar colapsable
+
+3. **UI/UX:**
+
+   - **POS Simple:** Botones grandes (mínimo 48x48px), fuente grande (18px+)
+   - **Dashboard Admin:** Interfaz profesional estilo SaaS moderno
+   - Dos modos: Simple (cajero) y Avanzado (admin)
    - Colores contrastantes
    - Máximo 3 clicks para cualquier acción
 
-2. **Métodos de pago:**
+4. **Métodos de pago:**
 
    - Efectivo
    - Tarjeta (débito/crédito)
    - Otros (transferencia)
+   - **MercadoPago** (integración planificada)
 
-3. **Flujo de venta:**
+5. **Flujo de venta:**
 
    - Escanear/Buscar producto
    - Agregar al carrito (lista visible)
@@ -273,7 +350,7 @@ src/
    - Seleccionar método de pago
    - Confirmar (opcional: imprimir ticket)
 
-4. **Caja:**
+6. **Caja:**
    - Abrir caja al inicio del día (monto inicial)
    - Registrar ventas normalmente
    - Cerrar caja (contar efectivo, ver diferencias)
@@ -286,21 +363,33 @@ El Sprint 1 será exitoso si:
 
 1. **Funcionalidad Core:**
 
+   - ✅ Puedo registrarme e iniciar sesión con JWT
+   - ✅ Hay roles diferenciados (admin, cajero)
    - ✅ Puedo crear 10 productos en < 5 minutos
    - ✅ Puedo hacer una venta completa en < 30 segundos
    - ✅ El stock se descuenta automáticamente
    - ✅ Puedo ver total de ventas del día
+   - ✅ Dashboard muestra métricas clave con gráficos
 
 2. **Calidad:**
 
    - ✅ Zero bugs críticos
    - ✅ Tests pasando (>70% coverage)
-   - ✅ UI es usable por persona sin experiencia PC
+   - ✅ UI simple del POS es usable por persona sin experiencia PC
+   - ✅ Dashboard profesional cumple estándares modernos
 
-3. **Técnico:**
+3. **Seguridad:**
+
+   - ✅ Autenticación JWT funcionando
+   - ✅ Rutas protegidas verifican roles
+   - ✅ Tokens expiran correctamente
+   - ✅ No hay vulnerabilidades de seguridad básicas
+
+4. **Técnico:**
    - ✅ Código sigue .cursorrules
    - ✅ Documentación actualizada
    - ✅ Deploy funciona en localhost
+   - ✅ Hot reload funciona en Docker
 
 ---
 

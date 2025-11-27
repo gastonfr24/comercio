@@ -9,6 +9,23 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ### Added
 
+- **Sprint 1 Ampliado:** Nuevas User Stories para sistema completo
+  - US-006: Sistema de autenticación JWT (13 story points, 7 tareas)
+    - Backend con djangorestframework-simplejwt
+    - Roles de usuario (ADMIN, CASHIER)
+    - API completa de autenticación
+    - Frontend con AuthContext, LoginForm y ProtectedRoute
+  - US-007: Dashboard administrativo profesional (13 story points, 7 tareas)
+    - Dashboard con métricas en tiempo real
+    - Gráficos de ventas con recharts
+    - Layout profesional con sidebar colapsable
+    - Solo accesible para rol ADMIN
+  - US-008: Mejora de interfaz simple del POS (8 story points, 4 tareas)
+    - Rediseño para usuarios no técnicos
+    - Teclado numérico en pantalla
+    - Feedback visual mejorado
+    - Tutorial interactivo para primera vez
+  - Sprint actualizado de 30 a 64 story points (139 horas estimadas)
 - Configuración inicial del proyecto
 - Backend Django 5.0 con Django REST Framework
 - Frontend Next.js 14 con TypeScript
