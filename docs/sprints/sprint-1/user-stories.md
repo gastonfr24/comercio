@@ -452,14 +452,14 @@
 
 **Backend:**
 
-- [ ] **T-028:** Configurar djangorestframework-simplejwt
+- [x] **T-028:** Configurar djangorestframework-simplejwt ✅ COMPLETADA
 
   - Instalar dependencia
   - Configurar settings.py
   - Crear endpoints de autenticación
   - Tests de obtención de tokens
   - **Rama:** `feature/sprint1-028-jwt-setup`
-  - **Estimado:** 3 horas
+  - **Estimado:** 3 horas | **Real:** 3 horas
 
 - [ ] **T-029:** Crear app `users` con roles
 
@@ -703,7 +703,7 @@
 | T-025     | Backend  | US-005 | 3h       | ⏳ Pendiente |
 | T-026     | Frontend | US-005 | 3h       | ⏳ Pendiente |
 | T-027     | Frontend | US-005 | 2h       | ⏳ Pendiente |
-| **T-028** | **Backend**  | **US-006** | **3h**   | **⏳ Pendiente** |
+| **T-028** | **Backend**  | **US-006** | **3h**   | **✅ COMPLETADA** |
 | **T-029** | **Backend**  | **US-006** | **4h**   | **⏳ Pendiente** |
 | **T-030** | **Backend**  | **US-006** | **4h**   | **⏳ Pendiente** |
 | **T-031** | **Frontend** | **US-006** | **3h**   | **⏳ Pendiente** |

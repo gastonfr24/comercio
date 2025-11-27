@@ -1,14 +1,14 @@
 # Sprint 1 - Progress Tracking
 
-**Última actualización:** 25/11/2025
+**Última actualización:** 27/11/2025
 
 ---
 
 ## 📊 Estado General
 
-**Progreso:** 8/27 tareas completadas (29.6%)  
-**Story Points:** 4.5/30 completados (15%)  
-**Tiempo estimado restante:** 50 horas
+**Progreso:** 10/45 tareas completadas (22%)  
+**Story Points:** 15/64 completados (23.4%)  
+**Tiempo estimado restante:** 122 horas
 
 ---
 
@@ -70,6 +70,21 @@
   - Totales automáticos
   - localStorage persistence
   - Integrado en /pos
+- ✅ **T-009: CartSummary component completado**
+  - Componente para mostrar items del carrito
+  - Subtotales y total general
+  - Botones para ajustar cantidades (+/-)
+  - Botón para eliminar items
+  - Botón de pagar (placeholder)
+  - Integrado en página POS
+  - PR #8 creado y mergeado
+- ✅ **T-028: JWT Setup completado**
+  - djangorestframework-simplejwt instalado
+  - Configuración completa de JWT
+  - Access tokens: 15min, Refresh tokens: 7 días
+  - Endpoints: /api/auth/login/, /refresh/, /verify/
+  - 10 tests de autenticación pasando (100%)
+  - Migraciones aplicadas (token_blacklist)
 
 **En Progreso:**
 
@@ -141,6 +156,52 @@
   - Solo productos activos
   - 11 tests de búsqueda (100% passing)
   - Optimizado para POS (< 100ms)
+
+- [x] **T-006:** ScannerInput component - Completado 27/11/2025
+  - Componente React con TypeScript
+  - Auto-focus y Enter key detection
+  - Loading y error states
+  - Integración con shadcn/ui
+  - Manejo de errores con onClear
+
+- [x] **T-007:** ProductList component - Completado 27/11/2025
+  - Grid responsive de productos
+  - Cards con detalles (precio, stock, categoría)
+  - Botón "Agregar al carrito"
+  - Estados: loading, empty, error
+  - Skeleton loaders
+
+- [x] **T-008:** useCart hook - Completado 27/11/2025
+  - Custom hook para gestión de carrito
+  - Funciones: addItem, removeItem, updateQuantity, clearCart
+  - Cálculo automático de totales
+  - Persistencia en localStorage
+  - Validación de stock
+
+- [x] **T-009:** CartSummary component - Completado 27/11/2025
+  - Componente para resumen del carrito
+  - Lista de items con subtotales
+  - Controles para ajustar cantidades
+  - Botón para eliminar items
+  - Total general actualizado
+  - Botón de pagar (placeholder)
+  - Botón para vaciar carrito
+  - Integrado en página /pos
+
+- [x] **T-028:** JWT Setup - Completado 27/11/2025
+  - Instalado djangorestframework-simplejwt==5.3.1
+  - Configurado JWTAuthentication en REST_FRAMEWORK
+  - SIMPLE_JWT settings:
+    - Access tokens: 15 minutos
+    - Refresh tokens: 7 días
+    - Rotación de tokens habilitada
+    - Blacklist automática
+  - Endpoints creados:
+    - POST /api/auth/login/
+    - POST /api/auth/refresh/
+    - POST /api/auth/verify/
+  - Migraciones aplicadas (token_blacklist)
+  - 10 tests comprehensivos (100% passing)
 
 ---
 

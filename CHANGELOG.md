@@ -9,6 +9,22 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ### Added
 
+- **Sprint 1 - T-028 Completada:** Configuración de djangorestframework-simplejwt
+  - Instalado djangorestframework-simplejwt==5.3.1
+  - Agregado rest_framework_simplejwt y token_blacklist a INSTALLED_APPS
+  - Configurado REST_FRAMEWORK con JWTAuthentication
+  - Configuración de SIMPLE_JWT con:
+    - Access tokens: 15 minutos de duración
+    - Refresh tokens: 7 días de duración
+    - Rotación de refresh tokens habilitada
+    - Blacklist automática después de rotación
+  - Endpoints JWT creados:
+    - POST /api/auth/login/ - Obtener access y refresh tokens
+    - POST /api/auth/refresh/ - Renovar access token
+    - POST /api/auth/verify/ - Verificar validez de token
+  - Migraciones aplicadas (token_blacklist)
+  - 10 tests comprehensivos de JWT (100% passing)
+  - Tests incluyen: obtención, renovación, verificación y casos de error
 - **Sprint 1 Ampliado:** Nuevas User Stories para sistema completo
   - US-006: Sistema de autenticación JWT (13 story points, 7 tareas)
     - Backend con djangorestframework-simplejwt
@@ -26,6 +42,11 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
     - Feedback visual mejorado
     - Tutorial interactivo para primera vez
   - Sprint actualizado de 30 a 64 story points (139 horas estimadas)
+- **Scripts de Demo:** Script para crear productos ficticios
+  - Script create_demo_products.py con 25 productos reales
+  - Productos distribuidos en 8 categorías
+  - Casos de testing: stock normal, bajo stock, sin stock
+  - Documentación completa en backend/scripts/README.md
 - Configuración inicial del proyecto
 - Backend Django 5.0 con Django REST Framework
 - Frontend Next.js 14 con TypeScript
