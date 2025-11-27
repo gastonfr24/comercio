@@ -44,5 +44,19 @@ export const checkApiHealth = async () => {
   return response.data
 }
 
+/**
+ * Search products by query.
+ * Searches by barcode (exact) or name (partial).
+ *
+ * @param query - Search query (barcode or product name)
+ * @returns Array of matching products
+ */
+export const searchProducts = async (query: string) => {
+  const response = await api.get('/products/search/', {
+    params: { q: query },
+  })
+  return response.data
+}
+
 export default api
 
