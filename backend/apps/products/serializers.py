@@ -1,20 +1,21 @@
 """
 Serializers for products app.
 """
-
 from rest_framework import serializers
 from .models import Product
 
 
 class ProductSerializer(serializers.ModelSerializer):
     """
-    Serializer for Product model.
+    Serializer for Product model (full details).
 
-    Includes all product fields and calculated profit_margin.
+    Provides complete product information including calculated properties.
     """
 
-    profit_margin = serializers.ReadOnlyField()
-    in_stock = serializers.ReadOnlyField()
+    profit_margin = serializers.DecimalField(
+        max_digits=5, decimal_places=2, read_only=True
+    )
+    in_stock = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Product
@@ -32,48 +33,95 @@ class ProductSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["id", "created_at", "updated_at"]
+        read_only_fields = ["id", "created_at", "updated_at", "profit_margin", "in_stock"]
 
-    def validate(self, data):
+    def validate_barcode(self, value):
         """
-        Validate that price is not lower than cost.
+        Validate that barcode is unique.
+
+        Args:
+            value: Barcode to validate
+
+        Returns:
+            Barcode if valid
+
+        Raises:
+            ValidationError: If barcode already exists
         """
-        price = data.get("price")
-        cost = data.get("cost")
+        instance = self.instance
+        if instance and instance.barcode == value:
+            return value
 
-        # Si ambos están presentes, validar
-        if price is not None and cost is not None:
-            if price < cost:
-                raise serializers.ValidationError(
-                    {"price": "Price cannot be lower than cost."}
-                )
+        if Product.objects.filter(barcode=value).exists():
+            raise serializers.ValidationError(
+                f"Product with barcode '{value}' already exists."
+            )
 
-        # Si solo price está presente (update), validar contra cost existente
-        if price is not None and cost is None and self.instance:
-            if price < self.instance.cost:
-                raise serializers.ValidationError(
-                    {"price": "Price cannot be lower than cost."}
-                )
+        return value
 
-        # Si solo cost está presente (update), validar contra price existente
-        if cost is not None and price is None and self.instance:
-            if self.instance.price < cost:
-                raise serializers.ValidationError(
-                    {"cost": "Cost cannot be higher than price."}
-                )
+    def validate_price(self, value):
+        """
+        Validate that price is positive.
 
-        return data
+        Args:
+            value: Price to validate
+
+        Returns:
+            Price if valid
+
+        Raises:
+            ValidationError: If price is not positive
+        """
+        if value <= 0:
+            raise serializers.ValidationError("Price must be greater than 0.")
+
+        return value
+
+    def validate_cost(self, value):
+        """
+        Validate that cost is positive.
+
+        Args:
+            value: Cost to validate
+
+        Returns:
+            Cost if valid
+
+        Raises:
+            ValidationError: If cost is not positive
+        """
+        if value <= 0:
+            raise serializers.ValidationError("Cost must be greater than 0.")
+
+        return value
+
+    def validate_stock(self, value):
+        """
+        Validate that stock is non-negative.
+
+        Args:
+            value: Stock to validate
+
+        Returns:
+            Stock if valid
+
+        Raises:
+            ValidationError: If stock is negative
+        """
+        if value < 0:
+            raise serializers.ValidationError("Stock cannot be negative.")
+
+        return value
 
 
 class ProductListSerializer(serializers.ModelSerializer):
     """
-    Lightweight serializer for listing products.
+    Serializer for Product model (list view).
 
-    Only includes essential fields for better performance.
+    Provides minimal product information for list views.
     """
 
-    profit_margin = serializers.ReadOnlyField()
-    in_stock = serializers.ReadOnlyField()
+    in_stock = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Product
@@ -84,6 +132,8 @@ class ProductListSerializer(serializers.ModelSerializer):
             "price",
             "stock",
             "category",
-            "profit_margin",
+            "is_active",
             "in_stock",
         ]
+        read_only_fields = fields
+

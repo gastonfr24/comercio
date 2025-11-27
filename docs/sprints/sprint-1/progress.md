@@ -6,9 +6,9 @@
 
 ## 📊 Estado General
 
-**Progreso:** 2/27 tareas completadas (7.4%)  
-**Story Points:** 1/30 completados (3.3%)  
-**Tiempo estimado restante:** 69 horas
+**Progreso:** 4/27 tareas completadas (14.8%)  
+**Story Points:** 2/30 completados (6.7%)  
+**Tiempo estimado restante:** 62 horas
 
 ---
 
@@ -36,6 +36,17 @@
   - Filtros, búsqueda y paginación
   - 17 tests de API pasando (100%)
   - django-filter integrado
+  - PR #2 creado y mergeado a dev
+- ✅ **T-004: Sale models completado**
+  - Sale y SaleItem models
+  - Gestión de stock automática
+  - 24 tests pasando (100%)
+  - Django admin configurado
+- ✅ **T-005: Create sale API completado**
+  - SaleSerializer y CreateSaleSerializer
+  - SaleViewSet con CRUD completo
+  - 14 tests de API pasando (100%)
+  - Endpoints: POST /api/sales/, GET, cancel
 
 **En Progreso:**
 
@@ -47,11 +58,12 @@
 
 **Notas:**
 
-- 2 tareas completadas en el primer día
-- Sistema de PR implementado correctamente
-- Backend 100% funcional con API REST
+- 4 tareas completadas en el primer día (excelente ritmo!)
+- Backend 100% funcional: productos y ventas
 - Superuser creado para desarrollo (admin/admin123)
-- Próximo: T-003 - Product search API
+- Sistema de PR implementado correctamente
+- APIs REST completas con validaciones y tests
+- Próximo: T-003 - Product search API o Frontend components
 
 ---
 
@@ -75,6 +87,27 @@
   - Paginación customizable
   - 17 tests de API (100% passing)
   - django-filter integrado
+
+- [x] **T-004:** Sale models - Completado 25/11/2025
+  - App sales creada
+  - Sale model con payment_type, status, total
+  - SaleItem model con relaciones FK
+  - Métodos de negocio: complete_sale(), cancel_sale()
+  - Gestión automática de stock
+  - Validaciones completas
+  - 24 tests comprehensivos (100% passing)
+  - Django admin con inline editing
+
+- [x] **T-005:** Create sale API - Completado 25/11/2025
+  - SaleSerializer y CreateSaleSerializer
+  - SaleItemSerializer para items de venta
+  - SaleViewSet con create, list, retrieve, cancel
+  - Validación automática de stock disponible
+  - Descuento automático de stock
+  - Cancelación con restauración de stock
+  - Filtrado y búsqueda
+  - 14 tests de API (100% passing)
+
 
 ---
 

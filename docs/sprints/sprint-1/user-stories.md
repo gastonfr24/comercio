@@ -61,14 +61,18 @@
   - **Rama:** `feature/sprint1-003-product-search-api`
   - **Estimado:** 3 horas
 
-- [ ] **T-004:** Crear app `sales` con modelos Sale y SaleItem
+- [x] **T-004:** Crear app `sales` con modelos Sale y SaleItem ✅ COMPLETADA
 
-  - Sale: total, payment_type, date, status
-  - SaleItem: product, quantity, unit_price, subtotal
-  - Relaciones FK correctas
-  - Tests de modelos
+  - ✅ Sale: total, payment_type (cash/card/transfer), date, status (pending/completed/cancelled)
+  - ✅ SaleItem: product, quantity, unit_price, subtotal (auto-calculado)
+  - ✅ Relaciones FK correctas (Sale ← SaleItem → Product)
+  - ✅ Métodos: calculate_total(), complete_sale(), cancel_sale()
+  - ✅ Gestión automática de stock
+  - ✅ Validaciones completas
+  - ✅ Django admin con inline editing
+  - ✅ Tests de modelos (24 tests pasando)
   - **Rama:** `feature/sprint1-004-sale-models`
-  - **Estimado:** 4 horas
+  - **Estimado:** 4 horas | **Real:** 3.5 horas
 
 - [ ] **T-005:** API endpoint POST /api/sales/
   - Crear venta con items

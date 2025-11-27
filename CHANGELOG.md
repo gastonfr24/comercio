@@ -48,6 +48,26 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
   - django-filter integrado para filtros avanzados
   - 17 tests de API (100% passing)
   - Endpoints: GET /api/products/, POST, GET /api/products/{id}/, PUT, PATCH, DELETE
+- **Sprint 1 - T-004 Completada:** Modelos Sale y SaleItem
+  - App sales con modelos Sale y SaleItem
+  - Sale: total, payment_type (cash/card/transfer), status (pending/completed/cancelled), date
+  - SaleItem: product, quantity, unit_price, subtotal (auto-calculado)
+  - Métodos: calculate_total(), complete_sale(), cancel_sale()
+  - Gestión automática de stock al completar/cancelar ventas
+  - Validaciones completas en modelos
+  - Django admin configurado con inline editing
+  - 24 tests comprehensivos (100% passing)
+  - Migraciones creadas y aplicadas
+- **Sprint 1 - T-005 Completada:** API REST para ventas
+  - SaleSerializer y CreateSaleSerializer para crear ventas
+  - SaleViewSet con operaciones CRUD completas
+  - Validación automática de stock disponible
+  - Descuento automático de stock al completar venta
+  - Cancelación de ventas con restauración de stock
+  - Filtrado por status, payment_type, date
+  - Búsqueda por producto
+  - 14 tests de API (100% passing)
+  - Endpoints: GET /api/sales/, POST, GET /api/sales/{id}/, POST /api/sales/{id}/cancel/
 
 ### Changed
 

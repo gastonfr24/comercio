@@ -1,17 +1,19 @@
 """
 Views for products app.
 """
-
-from rest_framework import viewsets, filters
-from rest_framework.pagination import PageNumberPagination
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.pagination import PageNumberPagination
 from .models import Product
 from .serializers import ProductSerializer, ProductListSerializer
 
 
 class ProductPagination(PageNumberPagination):
     """
-    Custom pagination for products.
+    Pagination class for products.
     """
 
     page_size = 20
@@ -21,59 +23,78 @@ class ProductPagination(PageNumberPagination):
 
 class ProductViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for Product model.
+    ViewSet for managing products.
 
-    Provides CRUD operations for products with filtering and search capabilities.
+    Provides CRUD operations for products with filtering and search.
+
+    Endpoints:
+        GET /api/products/ - List all products
+        POST /api/products/ - Create new product
+        GET /api/products/{id}/ - Retrieve product details
+        PUT /api/products/{id}/ - Update product
+        PATCH /api/products/{id}/ - Partial update product
+        DELETE /api/products/{id}/ - Delete product
 
     Filters:
-        - search: Search by name or barcode
-        - category: Filter by category
         - is_active: Filter by active status
+        - category: Filter by category
+        - price: Filter by price (exact, gte, lte)
+        - stock: Filter by stock (exact, gte, lte)
+
+    Search:
+        - Search by name, barcode, or category
 
     Ordering:
-        - Default: name (ascending)
-        - Available: name, price, stock, created_at
+        - Order by name, price, stock, created_at
     """
 
     queryset = Product.objects.all()
-    serializer_class = ProductSerializer
     pagination_class = ProductPagination
-    filter_backends = [
-        DjangoFilterBackend,
-        filters.SearchFilter,
-        filters.OrderingFilter,
-    ]
-
-    # Filtros exactos
-    filterset_fields = ["category", "is_active"]
-
-    # Búsqueda por nombre y barcode
-    search_fields = ["name", "barcode"]
-
-    # Ordenamiento disponible
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = {
+        "is_active": ["exact"],
+        "category": ["exact", "icontains"],
+        "price": ["exact", "gte", "lte"],
+        "stock": ["exact", "gte", "lte"],
+    }
+    search_fields = ["name", "barcode", "category"]
     ordering_fields = ["name", "price", "stock", "created_at"]
     ordering = ["name"]
 
     def get_serializer_class(self):
         """
-        Use lightweight serializer for list action.
+        Get appropriate serializer based on action.
+
+        Returns:
+            ProductListSerializer for list action,
+            ProductSerializer for other actions
         """
         if self.action == "list":
             return ProductListSerializer
         return ProductSerializer
 
-    def get_queryset(self):
+    @action(detail=False, methods=["get"])
+    def low_stock(self, request):
         """
-        Filter queryset to only show active products by default.
+        Get products with low stock (less than 10 units).
 
-        Use ?is_active=false to include inactive products.
+        Returns:
+            200 OK: List of products with low stock
         """
-        queryset = super().get_queryset()
+        threshold = int(request.query_params.get("threshold", 10))
+        products = Product.objects.filter(stock__lt=threshold, is_active=True)
+        serializer = self.get_serializer(products, many=True)
+        return Response(serializer.data)
 
-        # Por defecto, solo mostrar productos activos
-        if self.action == "list":
-            is_active = self.request.query_params.get("is_active", None)
-            if is_active is None:
-                queryset = queryset.filter(is_active=True)
+    @action(detail=False, methods=["get"])
+    def out_of_stock(self, request):
+        """
+        Get products that are out of stock.
 
-        return queryset
+        Returns:
+            200 OK: List of out of stock products
+        """
+        products = Product.objects.filter(stock=0, is_active=True)
+        serializer = self.get_serializer(products, many=True)
+        return Response(serializer.data)
+
