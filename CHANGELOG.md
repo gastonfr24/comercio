@@ -9,6 +9,29 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ### Added
 
+- **Sprint 1 - T-029 Completada:** App users con sistema de roles
+  - Creada app `users` con modelo User personalizado
+  - Extendido de AbstractUser con campos adicionales
+  - Sistema de roles: ADMIN y CASHIER
+  - Propiedades de permisos: is_admin, is_cashier
+  - Métodos de autorización:
+    - can_manage_products() - Solo admin
+    - can_manage_users() - Solo admin
+    - can_view_reports() - Solo admin
+    - can_manage_cash_register() - Admin y Cashier
+    - can_make_sales() - Admin y Cashier
+  - Permission classes personalizadas:
+    - IsAdmin - Solo administradores
+    - IsCashier - Solo cajeros
+    - IsAdminOrCashier - Administradores o cajeros
+    - IsAdminOrReadOnly - Admin write, otros read
+  - Django admin configurado con filtros y búsqueda
+  - Configurado AUTH_USER_MODEL = "users.User"
+  - 21 tests comprehensivos (100% passing)
+  - Tests de modelo User y permission classes
+  - Migraciones creadas y aplicadas
+  - Database recreada con nuevo modelo User
+  - Actualizado test_jwt.py para usar get_user_model()
 - **Sprint 1 - T-028 Completada:** Configuración de djangorestframework-simplejwt
   - Instalado djangorestframework-simplejwt==5.3.1
   - Agregado rest_framework_simplejwt y token_blacklist a INSTALLED_APPS
