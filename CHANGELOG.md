@@ -77,6 +77,27 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
   - Solo productos activos en resultados
   - 11 tests de búsqueda (100% passing)
   - Optimizado para uso en POS (< 100ms de respuesta)
+- **Sprint 1 - T-006 Completada:** Componente ScannerInput para POS
+  - Componente React con TypeScript
+  - Input con autofocus para escaneo rápido
+  - Detección de tecla Enter para búsqueda
+  - Loading states y feedback visual
+  - Error handling con mensajes claros
+  - Integración con shadcn/ui (Input, Button)
+  - Accesibilidad (ARIA labels)
+  - Página de prueba /pos creada
+  - Lint sin errores
+- **Sprint 1 - T-007 Completada:** Componente ProductList para resultados
+  - Componente React con TypeScript
+  - Grid responsive (1-4 columnas según pantalla)
+  - Cards de producto con información completa
+  - Botón agregar al carrito
+  - Estados: loading, empty, error
+  - Integración con API de búsqueda
+  - Formato de precios en ARS
+  - Stock indicator visual
+  - Skeleton loading para UX
+  - Página /pos actualizada con búsqueda real
 
 ### Changed
 

@@ -6,9 +6,9 @@
 
 ## 📊 Estado General
 
-**Progreso:** 5/27 tareas completadas (18.5%)  
-**Story Points:** 2.5/30 completados (8.3%)  
-**Tiempo estimado restante:** 59 horas
+**Progreso:** 7/27 tareas completadas (25.9%)  
+**Story Points:** 3.5/30 completados (11.7%)  
+**Tiempo estimado restante:** 54 horas
 
 ---
 
@@ -52,6 +52,18 @@
   - Búsqueda optimizada para POS
   - 11 tests de búsqueda pasando (100%)
   - Respuesta < 100ms
+  - PR #4 creado
+- ✅ **T-006: ScannerInput component completado**
+  - Componente React con TypeScript
+  - Auto-focus y Enter key
+  - Loading y error states
+  - shadcn/ui integration
+  - PR #5 creado
+- ✅ **T-007: ProductList component completado**
+  - Grid responsive
+  - Cards de productos
+  - Integración con API
+  - Estados: loading, empty, error
 
 **En Progreso:**
 
