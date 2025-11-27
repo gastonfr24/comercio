@@ -58,6 +58,16 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
   - Django admin configurado con inline editing
   - 24 tests comprehensivos (100% passing)
   - Migraciones creadas y aplicadas
+- **Sprint 1 - T-005 Completada:** API REST para ventas
+  - SaleSerializer y CreateSaleSerializer para crear ventas
+  - SaleViewSet con operaciones CRUD completas
+  - Validación automática de stock disponible
+  - Descuento automático de stock al completar venta
+  - Cancelación de ventas con restauración de stock
+  - Filtrado por status, payment_type, date
+  - Búsqueda por producto
+  - 14 tests de API (100% passing)
+  - Endpoints: GET /api/sales/, POST, GET /api/sales/{id}/, POST /api/sales/{id}/cancel/
 
 ### Changed
 

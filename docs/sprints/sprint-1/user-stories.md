@@ -40,14 +40,17 @@
   - **Rama:** `feature/sprint1-001-product-model`
   - **Estimado:** 4 horas | **Real:** 4 horas
 
-- [ ] **T-002:** API endpoint GET /api/products/
+- [x] **T-002:** API endpoint GET /api/products/ ✅ COMPLETADA
 
-  - Listar productos activos
-  - Filtros: search, category
-  - Paginación
-  - Tests de API
+  - ✅ Listar productos activos (por defecto)
+  - ✅ Filtros: search, category, is_active
+  - ✅ Paginación (20 items por página, customizable)
+  - ✅ Ordenamiento por múltiples campos
+  - ✅ Serializers: ProductSerializer y ProductListSerializer
+  - ✅ ViewSet con operaciones CRUD completas
+  - ✅ Tests de API (17 tests pasando)
   - **Rama:** `feature/sprint1-002-products-list-api`
-  - **Estimado:** 2 horas
+  - **Estimado:** 2 horas | **Real:** 2 horas
 
 - [ ] **T-003:** API endpoint GET /api/products/search/
 

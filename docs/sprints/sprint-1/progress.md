@@ -6,9 +6,9 @@
 
 ## 📊 Estado General
 
-**Progreso:** 3/27 tareas completadas (11.1%)  
-**Story Points:** 1.5/30 completados (5%)  
-**Tiempo estimado restante:** 65.5 horas
+**Progreso:** 4/27 tareas completadas (14.8%)  
+**Story Points:** 2/30 completados (6.7%)  
+**Tiempo estimado restante:** 62 horas
 
 ---
 
@@ -24,21 +24,29 @@
 - ✅ Inicializado repositorio Git con Git Flow
 - ✅ Configurado GitHub repo: gastonfr24/comercio
 - ✅ Configurado docker-compose con .env files
+- ✅ Plantilla profesional de Pull Request creada
 - ✅ **T-001: Product model completado**
   - Modelo con validaciones y métodos de stock
   - 16 tests unitarios pasando (100%)
   - Migraciones creadas y aplicadas
   - Django admin configurado
+  - PR #1 creado y mergeado a dev
 - ✅ **T-002: Products list API completado**
   - ProductViewSet con CRUD completo
   - Filtros, búsqueda y paginación
   - 17 tests de API pasando (100%)
   - django-filter integrado
+  - PR #2 creado y mergeado a dev
 - ✅ **T-004: Sale models completado**
   - Sale y SaleItem models
   - Gestión de stock automática
   - 24 tests pasando (100%)
   - Django admin configurado
+- ✅ **T-005: Create sale API completado**
+  - SaleSerializer y CreateSaleSerializer
+  - SaleViewSet con CRUD completo
+  - 14 tests de API pasando (100%)
+  - Endpoints: POST /api/sales/, GET, cancel
 
 **En Progreso:**
 
@@ -50,11 +58,12 @@
 
 **Notas:**
 
-- 3 tareas completadas en el primer día (excelente ritmo!)
+- 4 tareas completadas en el primer día (excelente ritmo!)
 - Backend 100% funcional: productos y ventas
 - Superuser creado para desarrollo (admin/admin123)
 - Sistema de PR implementado correctamente
-- Próximo: T-005 - Create sale API
+- APIs REST completas con validaciones y tests
+- Próximo: T-003 - Product search API o Frontend components
 
 ---
 
@@ -88,6 +97,17 @@
   - Validaciones completas
   - 24 tests comprehensivos (100% passing)
   - Django admin con inline editing
+
+- [x] **T-005:** Create sale API - Completado 25/11/2025
+  - SaleSerializer y CreateSaleSerializer
+  - SaleItemSerializer para items de venta
+  - SaleViewSet con create, list, retrieve, cancel
+  - Validación automática de stock disponible
+  - Descuento automático de stock
+  - Cancelación con restauración de stock
+  - Filtrado y búsqueda
+  - 14 tests de API (100% passing)
+
 
 ---
 
