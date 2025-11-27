@@ -6,9 +6,9 @@
 
 ## 📊 Estado General
 
-**Progreso:** 4/27 tareas completadas (14.8%)  
-**Story Points:** 2/30 completados (6.7%)  
-**Tiempo estimado restante:** 62 horas
+**Progreso:** 5/27 tareas completadas (18.5%)  
+**Story Points:** 2.5/30 completados (8.3%)  
+**Tiempo estimado restante:** 59 horas
 
 ---
 
@@ -47,6 +47,11 @@
   - SaleViewSet con CRUD completo
   - 14 tests de API pasando (100%)
   - Endpoints: POST /api/sales/, GET, cancel
+- ✅ **T-003: Product search API completado**
+  - Endpoint GET /api/products/search/?q=
+  - Búsqueda optimizada para POS
+  - 11 tests de búsqueda pasando (100%)
+  - Respuesta < 100ms
 
 **En Progreso:**
 
@@ -58,12 +63,13 @@
 
 **Notas:**
 
-- 4 tareas completadas en el primer día (excelente ritmo!)
-- Backend 100% funcional: productos y ventas
+- 5 tareas completadas en el primer día (excelente ritmo!)
+- Backend 100% funcional: productos, búsqueda y ventas
 - Superuser creado para desarrollo (admin/admin123)
 - Sistema de PR implementado correctamente
 - APIs REST completas con validaciones y tests
-- Próximo: T-003 - Product search API o Frontend components
+- Endpoint de búsqueda optimizado para POS
+- Próximo: Frontend components o métodos de pago (MercadoPago)
 
 ---
 
@@ -108,6 +114,15 @@
   - Filtrado y búsqueda
   - 14 tests de API (100% passing)
 
+- [x] **T-003:** Product search API - Completado 27/11/2025
+  - Endpoint GET /api/products/search/?q={query}
+  - Búsqueda por código de barras (exacto)
+  - Búsqueda por nombre (parcial, case-insensitive)
+  - Prioridad a barcode sobre nombre
+  - Limita resultados a 10 items
+  - Solo productos activos
+  - 11 tests de búsqueda (100% passing)
+  - Optimizado para POS (< 100ms)
 
 ---
 

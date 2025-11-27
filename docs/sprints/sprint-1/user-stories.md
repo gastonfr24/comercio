@@ -52,14 +52,16 @@
   - **Rama:** `feature/sprint1-002-products-list-api`
   - **Estimado:** 2 horas | **Real:** 2 horas
 
-- [ ] **T-003:** API endpoint GET /api/products/search/
+- [x] **T-003:** API endpoint GET /api/products/search/ ✅ COMPLETADA
 
-  - Búsqueda por barcode
-  - Búsqueda por nombre (case-insensitive)
-  - Response rápido (< 500ms)
-  - Tests de búsqueda
+  - ✅ Búsqueda por barcode (exacto, case-insensitive)
+  - ✅ Búsqueda por nombre (parcial, case-insensitive)
+  - ✅ Prioridad a matches de barcode
+  - ✅ Response rápido (< 100ms)
+  - ✅ Limita resultados a 10 items
+  - ✅ Tests de búsqueda (11 tests pasando)
   - **Rama:** `feature/sprint1-003-product-search-api`
-  - **Estimado:** 3 horas
+  - **Estimado:** 3 horas | **Real:** 1 hora
 
 - [x] **T-004:** Crear app `sales` con modelos Sale y SaleItem ✅ COMPLETADA
 
@@ -74,14 +76,15 @@
   - **Rama:** `feature/sprint1-004-sale-models`
   - **Estimado:** 4 horas | **Real:** 3.5 horas
 
-- [ ] **T-005:** API endpoint POST /api/sales/
-  - Crear venta con items
-  - Validar stock disponible
-  - Descontar stock automáticamente
-  - Calcular totales
-  - Tests de creación
-  - **Rama:** `feature/sprint1-005-create-sale-api`
-  - **Estimado:** 5 horas
+- [x] **T-005:** API endpoint POST /api/sales/ ✅ COMPLETADA
+  - ✅ Crear venta con items
+  - ✅ Validar stock disponible
+  - ✅ Descontar stock automáticamente
+  - ✅ Calcular totales
+  - ✅ Cancelación de ventas con restauración de stock
+  - ✅ Tests de creación (14 tests de API pasando)
+  - **Rama:** `feature/sprint1-004-sale-models` (incluida en PR #4)
+  - **Estimado:** 5 horas | **Real:** 3 horas
 
 **Frontend:**
 
@@ -227,12 +230,24 @@
   - **Estimado:** 1 hora
 
 - [ ] **T-017:** Endpoint POST /api/sales/confirm/
+
   - Confirmar venta
   - Actualizar stock
   - Registrar en caja
   - Tests
   - **Rama:** `feature/sprint1-017-confirm-sale-api`
   - **Estimado:** 3 horas
+
+- [ ] **T-017b:** Integración de MercadoPago
+  - Instalar mercadopago SDK
+  - Crear preference de pago
+  - Webhook para notificaciones
+  - Endpoint POST /api/payments/mercadopago/create/
+  - Endpoint POST /api/payments/mercadopago/webhook/
+  - Verificación de pagos
+  - Tests de integración
+  - **Rama:** `feature/sprint1-017b-mercadopago-integration`
+  - **Estimado:** 5 horas
 
 **Frontend:**
 
