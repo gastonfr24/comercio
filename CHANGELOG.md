@@ -68,6 +68,15 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
   - Búsqueda por producto
   - 14 tests de API (100% passing)
   - Endpoints: GET /api/sales/, POST, GET /api/sales/{id}/, POST /api/sales/{id}/cancel/
+- **Sprint 1 - T-003 Completada:** API de búsqueda rápida de productos
+  - Endpoint optimizado GET /api/products/search/?q={query}
+  - Búsqueda por código de barras (exacto, case-insensitive)
+  - Búsqueda por nombre de producto (parcial, case-insensitive)
+  - Prioridad a coincidencias de código de barras
+  - Limita resultados a 10 items para respuesta rápida
+  - Solo productos activos en resultados
+  - 11 tests de búsqueda (100% passing)
+  - Optimizado para uso en POS (< 100ms de respuesta)
 - **Sprint 1 - T-006 Completada:** Componente ScannerInput para POS
   - Componente React con TypeScript
   - Input con autofocus para escaneo rápido
@@ -78,6 +87,17 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
   - Accesibilidad (ARIA labels)
   - Página de prueba /pos creada
   - Lint sin errores
+- **Sprint 1 - T-007 Completada:** Componente ProductList para resultados
+  - Componente React con TypeScript
+  - Grid responsive (1-4 columnas según pantalla)
+  - Cards de producto con información completa
+  - Botón agregar al carrito
+  - Estados: loading, empty, error
+  - Integración con API de búsqueda
+  - Formato de precios en ARS
+  - Stock indicator visual
+  - Skeleton loading para UX
+  - Página /pos actualizada con búsqueda real
 
 ### Changed
 

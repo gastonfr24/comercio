@@ -98,3 +98,43 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(products, many=True)
         return Response(serializer.data)
 
+    @action(detail=False, methods=["get"])
+    def search(self, request):
+        """
+        Fast search endpoint for POS system.
+
+        Optimized for real-time search while scanning or typing.
+        Searches by exact barcode match first, then by name.
+
+        Query Parameters:
+            q (str): Search query (barcode or product name)
+
+        Returns:
+            200 OK: List of matching products (max 10 results)
+            400 BAD REQUEST: Missing query parameter
+
+        Example:
+            GET /api/products/search/?q=7890123456789
+            GET /api/products/search/?q=coca
+        """
+        query = request.query_params.get("q", "").strip()
+
+        if not query:
+            return Response(
+                {"error": "Query parameter 'q' is required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Search active products only
+        base_queryset = Product.objects.filter(is_active=True)
+
+        # Try exact barcode match first (fastest for scanning)
+        products = base_queryset.filter(barcode__iexact=query)
+
+        # If no barcode match, search by name (case-insensitive)
+        if not products.exists():
+            products = base_queryset.filter(name__icontains=query)[:10]
+
+        serializer = ProductListSerializer(products, many=True)
+        return Response(serializer.data)
+

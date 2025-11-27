@@ -354,3 +354,156 @@ class TestProductDeleteAPI:
 
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert not Product.objects.filter(id=product_id).exists()
+
+
+@pytest.mark.django_db
+class TestProductSearchAPI:
+    """
+    Tests for GET /api/products/search/ endpoint.
+    """
+
+    def test_search_by_exact_barcode(self, api_client, sample_products):
+        """
+        Test searching by exact barcode match.
+        """
+        response = api_client.get("/api/products/search/?q=123456789")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 1
+        assert response.data[0]["barcode"] == "123456789"
+        assert response.data[0]["name"] == "Coca Cola 500ml"
+
+    def test_search_by_barcode_case_insensitive(self, api_client, sample_products):
+        """
+        Test searching by barcode is case-insensitive.
+        """
+        # Create a product with alphanumeric barcode
+        Product.objects.create(
+            barcode="ABC123",
+            name="Test Product",
+            price=Decimal("5.00"),
+            cost=Decimal("3.00"),
+            stock=10,
+        )
+
+        response = api_client.get("/api/products/search/?q=abc123")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 1
+        assert response.data[0]["barcode"] == "ABC123"
+
+    def test_search_by_name(self, api_client, sample_products):
+        """
+        Test searching by product name (partial match).
+        """
+        response = api_client.get("/api/products/search/?q=coca")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 1
+        assert "Coca" in response.data[0]["name"]
+
+    def test_search_by_name_case_insensitive(self, api_client, sample_products):
+        """
+        Test searching by name is case-insensitive.
+        """
+        response = api_client.get("/api/products/search/?q=PEPSI")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 1
+        assert "Pepsi" in response.data[0]["name"]
+
+    def test_search_multiple_results(self, api_client, sample_products):
+        """
+        Test searching returns multiple results when applicable.
+        """
+        response = api_client.get("/api/products/search/?q=500ml")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 2  # Coca Cola and Pepsi
+
+    def test_search_no_results(self, api_client, sample_products):
+        """
+        Test searching with no matches returns empty list.
+        """
+        response = api_client.get("/api/products/search/?q=nonexistent")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 0
+
+    def test_search_only_active_products(self, api_client, sample_products):
+        """
+        Test searching only returns active products.
+        """
+        # Deactivate Coca Cola
+        product = Product.objects.get(barcode="123456789")
+        product.is_active = False
+        product.save()
+
+        response = api_client.get("/api/products/search/?q=coca")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 0
+
+    def test_search_missing_query_parameter(self, api_client):
+        """
+        Test searching without query parameter returns 400.
+        """
+        response = api_client.get("/api/products/search/")
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "error" in response.data
+
+    def test_search_empty_query_parameter(self, api_client):
+        """
+        Test searching with empty query parameter returns 400.
+        """
+        response = api_client.get("/api/products/search/?q=")
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "error" in response.data
+
+    def test_search_limits_results(self, api_client):
+        """
+        Test searching limits results to 10 items.
+        """
+        # Create 15 products with similar names
+        for i in range(15):
+            Product.objects.create(
+                barcode=f"TEST{i:03d}",
+                name=f"Test Product {i}",
+                price=Decimal("1.00"),
+                cost=Decimal("0.50"),
+                stock=10,
+            )
+
+        response = api_client.get("/api/products/search/?q=Test Product")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) <= 10
+
+    def test_search_barcode_priority(self, api_client):
+        """
+        Test that barcode match has priority over name match.
+        """
+        # Create two products: one with barcode "123", another with "123" in name
+        Product.objects.create(
+            barcode="123",
+            name="Product A",
+            price=Decimal("1.00"),
+            cost=Decimal("0.50"),
+            stock=10,
+        )
+        Product.objects.create(
+            barcode="456",
+            name="Product 123 Name",
+            price=Decimal("2.00"),
+            cost=Decimal("1.00"),
+            stock=10,
+        )
+
+        response = api_client.get("/api/products/search/?q=123")
+
+        assert response.status_code == status.HTTP_200_OK
+        # Should only return the barcode match
+        assert len(response.data) == 1
+        assert response.data[0]["barcode"] == "123"
