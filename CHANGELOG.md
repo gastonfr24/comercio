@@ -109,17 +109,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
   - Persistencia en localStorage
   - Helpers: isInCart, getItemQuantity
   - Integrado en página /pos
-- **Sprint 1 - T-009 Completada:** Componente CartSummary
-  - Componente React con TypeScript
-  - Lista de items con información completa
-  - Controles de cantidad (+/- buttons)
-  - Botón eliminar item individual
-  - Botón limpiar carrito completo
-  - Cálculo y display de totales
-  - Botón COBRAR grande para checkout
-  - Empty state cuando no hay items
-  - Diseño optimizado para sidebar sticky
-  - Integrado en /pos con layout de 2 columnas
+  - Badge de resumen en header
 
 ### Changed
 
