@@ -761,8 +761,17 @@ Esta plantilla se auto-completa al crear un PR en GitHub. Incluye:
 
 ### Proceso de Revisión COMPLETO
 
-#### 1. **Antes de crear el PR**
+#### 1. **Antes de crear el PR** (OBLIGATORIO)
 
+- [ ] **Traer últimos cambios de dev y resolver conflictos:**
+  ```bash
+  git fetch origin dev:dev
+  git merge dev
+  # Si hay conflictos, resolverlos
+  git add .
+  git commit -m "merge: resolve conflicts with dev"
+  git push origin feature/sprint1-XXX-...
+  ```
 - [ ] Todos los tests pasan localmente
 - [ ] CHANGELOG.md actualizado
 - [ ] `docs/sprints/sprint-N/user-stories.md` checkbox marcado `[x]`
@@ -831,18 +840,27 @@ git push origin --delete feature/sprint1-XXX-descripcion
 **Al completar una tarea:**
 
 1. Verificar que todos los checkboxes de la tarea estén completos
-2. Pushear la rama: `git push origin feature/sprint1-XXX-...`
-3. **Crear PR usando `gh pr create`** con toda la información
-4. Sugerir al usuario que revise el PR en GitHub
-5. **NO hacer merge directo**, esperar a que el usuario apruebe el PR
+2. **OBLIGATORIO:** Traer últimos cambios de dev y resolver conflictos:
+   ```bash
+   git fetch origin dev:dev
+   git merge dev
+   # Resolver conflictos si existen
+   ```
+3. Pushear la rama: `git push origin feature/sprint1-XXX-...`
+4. **Crear PR usando `gh pr create`** con toda la información
+5. Sugerir al usuario que revise el PR en GitHub
+6. **NO hacer merge directo**, esperar a que el usuario apruebe el PR
 
 **NUNCA:**
 - ❌ Hacer `git merge` directo sin PR
 - ❌ Mergear a `main` sin pasar por `dev`
 - ❌ Crear PR sin completar checklist
 - ❌ Crear PR sin actualizar documentación
+- ❌ **Crear PR sin traer cambios de dev primero** (CRÍTICO)
 
 **SIEMPRE:**
+- ✅ **Traer cambios de dev ANTES de crear PR** (OBLIGATORIO)
+- ✅ Resolver conflictos ANTES de crear PR
 - ✅ Crear PR para TODO merge
 - ✅ Base branch: `dev`
 - ✅ Título con formato: `[T-XXX] tipo(scope): descripción`
