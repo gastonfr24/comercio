@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { ScannerInput } from "@/components/ScannerInput";
 import { ProductList, Product } from "@/components/ProductList";
+import { CartSummary } from "@/components/CartSummary";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { searchProducts } from "@/lib/api";
+import { useCart } from "@/hooks/useCart";
 
 /**
  * POS page for point of sale operations.
@@ -14,6 +16,9 @@ export default function POSPage() {
   const [error, setError] = useState<string | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
+
+  // Cart state
+  const cart = useCart();
 
   /**
    * Handle search submission.
@@ -31,7 +36,7 @@ export default function POSPage() {
       if (results.length === 0) {
         setError("No se encontraron productos");
       }
-    } catch (err) {
+    } catch {
       setError("Error al buscar productos. Intenta nuevamente.");
       setProducts([]);
     } finally {
@@ -51,12 +56,25 @@ export default function POSPage() {
 
   /**
    * Handle add to cart.
-   * TODO: Implement cart functionality in T-008.
+   * Adds product to cart using useCart hook.
    */
   const handleAddToCart = (product: Product) => {
+    cart.addItem({
+      id: product.id,
+      barcode: product.barcode,
+      name: product.name,
+      price: product.price,
+    });
+  };
+
+  /**
+   * Handle checkout action.
+   * TODO: Implement in T-018/T-019.
+   */
+  const handleCheckout = () => {
     // eslint-disable-next-line no-console
-    console.log("Adding to cart:", product);
-    // TODO: Implement with useCart hook
+    console.log("Checkout:", cart.items, cart.totals);
+    // TODO: Open payment modal
   };
 
   return (
@@ -68,58 +86,80 @@ export default function POSPage() {
         </p>
       </div>
 
-      <div className="space-y-6">
-        {/* Scanner Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Buscar Producto</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ScannerInput
-              onSearch={handleSearch}
-              isLoading={isLoading}
-              error={error}
-              onClear={handleClear}
-            />
-          </CardContent>
-        </Card>
-
-        {/* Results Section */}
-        {hasSearched && (
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column - Search and Results */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Scanner Section */}
           <Card>
             <CardHeader>
-              <CardTitle>
-                Resultados
-                {products.length > 0 && (
-                  <span className="ml-2 text-muted-foreground text-base font-normal">
-                    ({products.length} {products.length === 1 ? "producto" : "productos"})
-                  </span>
-                )}
-              </CardTitle>
+              <CardTitle>Buscar Producto</CardTitle>
             </CardHeader>
             <CardContent>
-              <ProductList
-                products={products}
-                onAddToCart={handleAddToCart}
+              <ScannerInput
+                onSearch={handleSearch}
                 isLoading={isLoading}
+                error={error}
+                onClear={handleClear}
               />
             </CardContent>
           </Card>
-        )}
 
-        {/* Info Section */}
-        {!hasSearched && (
-          <Card className="bg-muted/50">
-            <CardContent className="pt-6">
-              <div className="text-center text-muted-foreground">
-                <p className="text-lg mb-2">👆 Comienza escaneando o buscando un producto</p>
-                <p className="text-sm">
-                  Usa el lector de código de barras o escribe el nombre del producto
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+          {/* Results Section */}
+          {hasSearched && (
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  Resultados
+                  {products.length > 0 && (
+                    <span className="ml-2 text-muted-foreground text-base font-normal">
+                      ({products.length}{" "}
+                      {products.length === 1 ? "producto" : "productos"})
+                    </span>
+                  )}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ProductList
+                  products={products}
+                  onAddToCart={handleAddToCart}
+                  isLoading={isLoading}
+                />
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Info Section */}
+          {!hasSearched && (
+            <Card className="bg-muted/50">
+              <CardContent className="pt-6">
+                <div className="text-center text-muted-foreground">
+                  <p className="text-lg mb-2">
+                    👆 Comienza escaneando o buscando un producto
+                  </p>
+                  <p className="text-sm">
+                    Usa el lector de código de barras o escribe el nombre del
+                    producto
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+
+        {/* Right Column - Cart */}
+        <div className="lg:col-span-1">
+          <div className="sticky top-6">
+            <CartSummary
+              items={cart.items}
+              totals={cart.totals}
+              onIncrement={cart.incrementItem}
+              onDecrement={cart.decrementItem}
+              onRemove={cart.removeItem}
+              onClear={cart.clearCart}
+              onCheckout={handleCheckout}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

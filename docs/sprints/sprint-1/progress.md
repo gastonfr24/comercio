@@ -6,9 +6,9 @@
 
 ## 📊 Estado General
 
-**Progreso:** 7/27 tareas completadas (25.9%)  
-**Story Points:** 3.5/30 completados (11.7%)  
-**Tiempo estimado restante:** 54 horas
+**Progreso:** 9/27 tareas completadas (33.3%)  
+**Story Points:** 5/30 completados (16.7%)  
+**Tiempo estimado restante:** 47 horas
 
 ---
 
@@ -64,6 +64,20 @@
   - Cards de productos
   - Integración con API
   - Estados: loading, empty, error
+- ✅ **T-008: useCart hook completado**
+  - Custom hook para carrito
+  - Add, remove, update quantity
+  - Totales automáticos
+  - localStorage persistence
+  - Integrado en /pos
+  - PR #7 creado
+- ✅ **T-009: CartSummary component completado**
+  - Componente de carrito completo
+  - Controles de cantidad
+  - Botones eliminar y limpiar
+  - Display de totales
+  - Botón COBRAR
+  - Layout 2 columnas en /pos
 
 **En Progreso:**
 
