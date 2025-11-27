@@ -173,7 +173,7 @@ class TestJWTAuthentication:
     def test_access_protected_endpoint_with_token(self, api_client, test_user):
         """
         Test accessing a protected endpoint with valid JWT token.
-        
+
         Note: This test assumes products endpoint requires authentication.
         If not, this test should be adjusted based on actual protected endpoints.
         """
@@ -188,7 +188,7 @@ class TestJWTAuthentication:
 
         # Access endpoint with token
         api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
-        
+
         # For now, just verify token can be set in headers
         # Actual protected endpoint tests will come later
         assert api_client.credentials() is None  # credentials() doesn't return anything
@@ -196,10 +196,9 @@ class TestJWTAuthentication:
     def test_access_protected_endpoint_without_token(self, api_client):
         """
         Test accessing protected endpoint without token.
-        
+
         Note: Currently all endpoints have AllowAny permission.
         This test will be more relevant once we have protected endpoints.
         """
         # This test will be expanded when we have actual protected endpoints
         pass
-
