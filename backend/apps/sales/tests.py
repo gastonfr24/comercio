@@ -402,3 +402,4 @@ class TestSaleItemModel:
         total = sample_sale.calculate_total()
         assert total == Decimal("65.00")  # (2*10) + (3*15)
 
+

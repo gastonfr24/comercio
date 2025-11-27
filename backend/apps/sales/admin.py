@@ -112,3 +112,4 @@ class SaleItemAdmin(admin.ModelAdmin):
         queryset = super().get_queryset(request)
         return queryset.select_related("sale", "product")
 
+

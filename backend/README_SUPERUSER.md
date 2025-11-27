@@ -44,3 +44,4 @@ python create_superuser.py
 - These credentials should ONLY be used in development
 - Never commit `.env.dev` or `.env` files to version control
 
+
