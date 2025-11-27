@@ -7,14 +7,15 @@ const nextConfig = {
   // Para Docker standalone build (solo en producción)
   ...(process.env.NODE_ENV === 'production' && { output: 'standalone' }),
   // Configuración para hot reload en Docker
-  webpackDevMiddleware: config => {
-    config.watchOptions = {
-      poll: 1000, // Check for changes every second
-      aggregateTimeout: 300,
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.watchOptions = {
+        poll: 1000, // Check for changes every second
+        aggregateTimeout: 300,
+      }
     }
     return config
   },
 }
 
 module.exports = nextConfig
-

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { checkApiHealth } from '@/lib/api'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -8,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { CheckCircle2, XCircle, Palette, Rocket, BookOpen, Target } from 'lucide-react'
 
 export default function Home() {
+  const router = useRouter()
   const [apiStatus, setApiStatus] = useState<{
     status: 'loading' | 'success' | 'error'
     message: string
@@ -34,6 +36,20 @@ export default function Home() {
 
     checkApi()
   }, [])
+
+  /**
+   * Navigate to POS page.
+   */
+  const handleGoToPOS = () => {
+    router.push('/pos')
+  }
+
+  /**
+   * Navigate to API documentation.
+   */
+  const handleGoToAPI = () => {
+    window.open('http://localhost:8000/api/', '_blank')
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-purple-600 via-purple-700 to-indigo-800">
@@ -178,10 +194,18 @@ export default function Home() {
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
-                Ver Documentación
+              <Button 
+                size="lg" 
+                onClick={handleGoToPOS}
+                className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+              >
+                Ir al POS
               </Button>
-              <Button size="lg" variant="outline">
+              <Button 
+                size="lg" 
+                variant="outline"
+                onClick={handleGoToAPI}
+              >
                 Explorar API
               </Button>
             </CardContent>
