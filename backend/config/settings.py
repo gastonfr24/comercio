@@ -63,6 +63,7 @@ THIRD_PARTY_APPS = [
 # Local apps
 LOCAL_APPS = [
     "apps.core",
+    "apps.users",
     "apps.products",
     "apps.sales",
 ]
@@ -127,6 +128,10 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+
+# Custom User Model
+AUTH_USER_MODEL = "users.User"
 
 
 # Internationalization
